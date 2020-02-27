@@ -1,4 +1,18 @@
-= TBD
+= ENV Config Manager
+
+== Intro
+
+Yet Another Config Manager ? Yep!
+
+In short:
+- written in Typescript
+- available for Typescript or Javascript
+- You create your config specs using a Factory
+- Yaml support will come later
+- your config is then loaded from your ENV or .env file
+- your config is validated according to your specs
+- your config is made available to you in a super easy way
+
 
 == Dev
 

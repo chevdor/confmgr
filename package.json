@@ -2,6 +2,10 @@
   "name": "envconfman",
   "version": "0.1.0",
   "description": "Env. Configuration Manager",
+  "repository": {
+    "type": "git",
+    "url": "https://gitlab.com/chevdor/envconfman"
+  },
   "scripts": {
     "clean": "rm -rf .nyc_output build coverage node_modules out dist build docs",
     "setup": "npm install -g ts-node",
