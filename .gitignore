@@ -1,0 +1,13 @@
+docs
+node_modules
+src/config/config*
+.DS_Store
+.env*
+!.env-sample
+build
+dist/
+out/
+config.js
+package-lock.json
+yarn-error.log
+*.db
