@@ -5,25 +5,33 @@
 
 == Intro
 
-Yet Another Config Manager ? Yep!
+This module makes management of your config a breeze.
 
 In short:
 
-- written in Typescript
-- available for Typescript or Javascript
-- You create your config specs using a Factory
-- Yaml support will come later
-- your config is then loaded from your ENV or .env file
-- your config is validated according to your specs
-- your config is made available to you in a super easy way
-
+- Available for Typescript or Javascript
+- Written in Typescript
+- You create your config specs using a Factory or a Yaml file
+- Your config is then loaded from your ENV or .env file
+- Support for multiple .env (debug, etc...)
+- Your config is validated according to your specs
+- Your config is made available to you in a super easy way
+- You can Print your config using your logger
+- confmgr protects your secret and will never display them
 
 == Usage
 
 You may have a look at the samples in the `samples` folder. There are simple demos in Typescript and Javascript.
 
-In short, you first need to define the specs of your config. It may look like:
+In short, you first need to define the specs of your config. You can do that using Yaml or using a Factory directly, as shown below:
 
+.Using a Yaml file
+[source,yaml]
+----
+include::samples/03_ts_yaml/configSpecs.yml[]
+----
+
+.Using the Factory
 [source,typescript]
 ----
 include::samples/01_ts_basic_valid/configSpecs.ts[]
@@ -41,7 +49,6 @@ You may now use your config:
 ----
 include::samples/01_ts_basic_valid/index.ts[]
 ----
-
 
 WARNING: You should never display your config, especially in your logs, as it may contain some secrets! Instead, use the Print() method of the ConfigManager, it will mask sensible data.
 

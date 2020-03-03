@@ -14,3 +14,10 @@ TS_SAMPLE:
       description: some mandatory param
       mandatory: true
       default: 42
+    OPTIONAL_WITH_DEF:
+      description: some optional param
+      mandatory: true
+      default: 42
+    OPTIONAL_NO_DEF:
+      description: some optional param
+      mandatory: true
