@@ -169,6 +169,7 @@ export class ConfigManager {
    */
   public Print(opt: PrintOptions): void {
     const container = `${this.specs.container.prefix}_${this.specs.container.module}`;
+    if (!opt) opt = {color: true};
     if (!opt.logger) opt.logger = console.log;
     
     if (opt.color)
