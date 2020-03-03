@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "resolveJsonModule": false,
     "allowJs": true,
+    "declaration": true,
     "noImplicitAny": false,
     "sourceMap": true,
     "preserveConstEnums": true,
@@ -20,9 +19,10 @@
     "allowUnreachableCode": false,
     "experimentalDecorators": true,
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "./build"
+    "outDir": "./lib",
+    "baseUrl": "."
   },
   "include": ["./bin/**/*", "./src/**/*", "./package.json"],
-  "exclude": ["node_modules", "**/*.test.ts"],
+  "exclude": ["node_modules", "**/*.test.ts", "lib"],
   "compileOnSave": true
 }

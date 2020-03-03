@@ -1,4 +1,4 @@
-import process = require('process');
+import * as process from 'process';
 import dotenv from 'dotenv';
 import * as path from 'path';
 import { ConfigSpecs, ConfigDictionnaryRaw, ConfigDictionnarySimple, ConfigItem } from './types';
@@ -7,8 +7,8 @@ function clone(object: any): any {
   return JSON.parse(JSON.stringify(object));
 }
 
-export class ConfigSingleton {
-  private static instance: ConfigSingleton;
+export class ConfigManager {
+  private static instance: ConfigManager;
 
   private specs: ConfigSpecs;
 
@@ -18,12 +18,12 @@ export class ConfigSingleton {
     this.refresh();
   }
 
-  public static getInstance(specs?: ConfigSpecs): ConfigSingleton {
+  public static getInstance(specs?: ConfigSpecs): ConfigManager {
     if (!this.instance && !specs) {
       throw new Error('Missing specs');
     }
     if (!this.instance && specs) {
-      this.instance = new ConfigSingleton(specs);
+      this.instance = new ConfigManager(specs);
     }
 
     return this.instance;
@@ -39,6 +39,7 @@ export class ConfigSingleton {
 
     // Hook up functions
     ['Validate', 'DumpEnv'].map((f: string) => {
+      //@ts-ignore
       confClone[f] = this[f].bind(this);
     });
 
@@ -65,7 +66,7 @@ export class ConfigSingleton {
    * interesting for you.
    */
   public refresh(): void {
-    const envfile = ConfigSingleton.getEnvFile();
+    const envfile = ConfigManager.getEnvFile();
     // console.log('ENV file:', envfile);
     dotenv.config({ path: envfile });
     // const ENV = process.env;
@@ -74,18 +75,18 @@ export class ConfigSingleton {
     // this.filteredEnv = Object.entries(process.env).filter(([key, val]) => {
     //   return key.startsWith('SAMPLE');
     // });
-    // ConfigSingleton.instance = new ConfigSingleton(this.specs)
+    // ConfigManager.instance = new ConfigManager(this.specs)
   }
 
-  // assert((ConfigSingleton.instance.polkadot.nodeName || '').length > 0, "The extracted config does not look OK")
+  // assert((ConfigManager.instance.polkadot.nodeName || '').length > 0, "The extracted config does not look OK")
   // }
 
   /** Calling this function will get an instance of the Config and attach it
    * to the global scope.
    */
-  public static loadToGlobal(): void {
-    global['Config'] = ConfigSingleton.getInstance().getConfig();
-  }
+  // public static loadToGlobal(): void {
+  //   global['Config'] = ConfigManager.getInstance().getConfig();
+  // }
 
   /** Validate the config and return wheather it is valid or not */
   public Validate(): boolean {
@@ -107,13 +108,14 @@ export class ConfigSingleton {
 
   /** Show the ENV variables this application cares about */
   // public static getSupportedEnv(): ConfigSpecs {
-  //   return ConfigSingleton.g;
+  //   return ConfigManager.g;
   // }
 
   /**
    * Display the current ENV to ensure everything that is used matches
    * the expectations.
    */
+  //@ts-ignore
   public DumpEnv(logger: (...args) => void): void {
     const container = `${this.specs.container.prefix}_${this.specs.container.module}`;
     logger(`===> ${container} ENV:`);
