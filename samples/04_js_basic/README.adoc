@@ -8,3 +8,16 @@ Run with the following:
     yarn clean
     yarn
     yarn start
+
+.Specs
+[source, javascript]
+----
+include::configSpecs.js[]
+----
+
+.Example
+[source, javascript]
+----
+include::index.js[]
+----
+

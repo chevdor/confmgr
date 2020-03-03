@@ -8,3 +8,16 @@ Run with the following:
     yarn clean
     yarn
     yarn start
+
+.Specs
+[source, yaml]
+----
+include::configSpecs.yml[]
+----
+
+.Example
+[source, typescript]
+----
+include::index.ts[]
+----
+
