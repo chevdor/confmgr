@@ -59,10 +59,8 @@ export class ConfigManager {
     }
     if (!this.instance && specs) {
       if (typeof (specs) === 'string') {
-        console.log('Init via YAML');
         this.instance = new ConfigManager(ConfigManager.loadSpecsFromYaml(specs));
       } else {
-        console.log('Init via Factory');
         this.instance = new ConfigManager(specs);
       }
     }
