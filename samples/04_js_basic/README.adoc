@@ -1,5 +1,7 @@
 
-= TS Basic with valid .env
+= JS Basic with valid .env
+
+This is a Javascript sample.
 
 Run with the following:
 

@@ -1,10 +1,14 @@
 = ENV Config Manager
+:toc:
+:sectnums:
+:sectanchors:
 
 == Intro
 
 Yet Another Config Manager ? Yep!
 
 In short:
+
 - written in Typescript
 - available for Typescript or Javascript
 - You create your config specs using a Factory
@@ -23,4 +27,5 @@ First run:
 Then you may for instance:
 
     yarn test:watch
-    
+
+include::samples/README.adoc[leveloffset=+1]

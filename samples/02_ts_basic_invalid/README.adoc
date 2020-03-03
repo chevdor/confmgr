@@ -1,7 +1,10 @@
 
-    npm init -y
-    tsc --init
-    npm install envconfman ts-node --save
-    Add a start script to your package.json: "start": "ts-node index.ts"
+= TS Basic with INvalid .env
 
-Create an .env file matching your specs.
+This is a Typescript sample.
+
+Run with the following:
+
+    yarn clean
+    yarn
+    yarn start
