@@ -1,4 +1,4 @@
-const ConfigManager = require('envconfman').ConfigManager;
+const ConfigManager = require('confmgr').ConfigManager;
 const mySpecs = require('./configSpecs').default;
 // console.log('My specs:', JSON.stringify( mySpecs, null, 2));
 

@@ -9,6 +9,6 @@
   },
   "license": "ISC",
   "dependencies": {
-    "envconfman": "^0.1.4"
+    "confmgr": "^0.1.4"
   }
 }

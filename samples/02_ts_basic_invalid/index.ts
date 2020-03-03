@@ -1,5 +1,5 @@
 // Your import will look like
-import { ConfigManager } from 'envconfman';
+import { ConfigManager } from 'confmgr';
 // import { ConfigManager } from '../../src/ConfigManager';
 
 import mySpecs from './configSpecs';

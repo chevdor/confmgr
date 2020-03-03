@@ -226,9 +226,9 @@ emoji-regex@^7.0.1:
   resolved "http://52.167.60.66:8081/repository/npm-all/emoji-regex/-/emoji-regex-7.0.3.tgz#933a04052860c85e83c122479c4748a8e4c72156"
   integrity sha512-CwBLREIQ7LvYFB0WyRvwhq5N5qPhc6PMjD6bYggFlI5YyDgl+0vxq5VHbMOFqLg7hfWzmu8T5Z1QofhmTIhItA==
 
-envconfman@^0.1.4:
+confmgr@^0.1.4:
   version "0.1.4"
-  resolved "http://52.167.60.66:8081/repository/npm-all/envconfman/-/envconfman-0.1.4.tgz#b2ba4c9de057f9303ecdd756a84d1783526d59ae"
+  resolved "http://52.167.60.66:8081/repository/npm-all/confmgr/-/confmgr-0.1.4.tgz#b2ba4c9de057f9303ecdd756a84d1783526d59ae"
   integrity sha512-zkzV5TtiJ1kVUgoqpppXzykYsTwGtMhmb8g/SdTqXhh1P8B+DIrfpTmD3Pf9Hqf+H8I/Opr9scALLHLHhRufzw==
   dependencies:
     "@babel/runtime" "7.8.4"

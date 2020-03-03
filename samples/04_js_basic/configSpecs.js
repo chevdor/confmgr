@@ -1,4 +1,4 @@
-const SpecsFactory = require('envconfman');
+const SpecsFactory = require('confmgr');
 const prefix = 'TS_SAMPLE';
 const mod = 'MODULE_01';
 const factory = new SpecsFactory.SpecsFactory({ prefix: prefix, module: mod });

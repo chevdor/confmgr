@@ -1,12 +1,12 @@
 {
-  "name": "envconfman",
-  "version": "0.1.4",
+  "name": "confmgr",
+  "version": "0.1.0",
   "description": "Env. Configuration Manager",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/chevdor/envconfman"
+    "url": "https://gitlab.com/chevdor/confmgr"
   },
   "publishConfig": {
     "registry": "http://52.167.60.66:8081/repository/npm-oss/"
