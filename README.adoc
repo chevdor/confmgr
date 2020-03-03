@@ -18,6 +18,30 @@ In short:
 - your config is made available to you in a super easy way
 
 
+== Usage
+
+You may have a look at the samples in the `samples` folder. There are simple demos in Typescript and Javascript.
+
+In short, you first need to define the specs of your config. It may look like:
+
+[source,typescript]
+----
+include::samples/01_ts_basic_valid/configSpecs.ts[]
+----
+
+Once you defined the specs for your config, you need to create an `.env` file (unless you plan on passing the config as Environment Variables). It looks as following for the specs mentioned above:
+
+----
+include::samples/01_ts_basic_valid/.env[]
+----
+
+You may now use your config:
+
+[source, typescript]
+----
+include::samples/01_ts_basic_valid/index.ts[]
+----
+
 == Dev
 
 First run:

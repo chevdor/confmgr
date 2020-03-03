@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "license": "MIT",
   "scripts": {
     "start": "node index.js",
     "clean": "rm -rf node_modules"
   },
-  "license": "ISC",
   "dependencies": {
     "confmgr": "^0.1.4"
   }
