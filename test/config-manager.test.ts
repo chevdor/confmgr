@@ -8,7 +8,7 @@ const secret = 'password123';
 const regexp = '12_34';
 
 // Here we set some ENV for testing
-function loadDefaultEnv() {
+function loadDefaultEnv(): void {
   process.env.SAMPLE_MODULE_PARAM1 = param1;
   process.env.SAMPLE_MODULE_PARAM2 = param2;
   process.env.SAMPLE_MODULE_SECRET = secret;
@@ -36,7 +36,6 @@ describe('ConfigManager', () => {
 
   it('Should properly fetch params', function() {
     const config = ConfigManager.getInstance(specs).getConfig();
-    // console.log(JSON.stringify(config, null, 2));
     expect(config['SAMPLE_MODULE_PARAM1']).to.equal(param1);
     expect(config['SAMPLE_MODULE_PARAM2']).to.equal(param2);
     expect(config['SAMPLE_MODULE_SECRET']).to.equal(secret);
@@ -46,15 +45,11 @@ describe('ConfigManager', () => {
 
   it('Should properly fetch config specs', function() {
     const configSpecs = ConfigManager.getInstance(specs).getSpecs();
-    // console.log('configSpecs', JSON.stringify(configSpecs, null, 2));
     expect(configSpecs['SAMPLE_MODULE_PARAM1'].description).to.have.length.above(3);
-
-    // expect(() => ConfigManager.getInstance()).to.not.throw();
   });
 
   it('Should return clean config', function() {
     const config = ConfigManager.getInstance(specs).getConfig();
-    // console.log(JSON.stringify(config, null, 2));
     expect(config['SAMPLE_MODULE_PARAM1']).to.equal(param1);
     expect(config['SAMPLE_MODULE_PARAM2']).to.equal(param2);
     expect(config['SAMPLE_MODULE_SECRET']).to.equal(secret);
@@ -85,7 +80,6 @@ describe('ConfigManager', () => {
   it('Should get field specs', function() {
     const config = ConfigManager.getInstance(specs);
     const fieldSepcs = config.getFieldSpecs('SAMPLE_MODULE_MANDAT1');
-    // console.log('fieldSepcs', fieldSepcs);
     expect(fieldSepcs.name).to.equal('SAMPLE_MODULE_MANDAT1');
     expect(fieldSepcs.description).to.equal('some mandatory param');
     expect(fieldSepcs.options).include.keys('mandatory');
@@ -111,5 +105,10 @@ describe('ConfigManager', () => {
     config = ConfigManager.getInstance(specs).getConfig();
     expect(config['SAMPLE_MODULE_REGEXP']).to.equal('222_33');
     expect(config.ValidateField('SAMPLE_MODULE_REGEXP')).to.be.false;
+  });
+
+  it('Should load config to global', function() {
+    ConfigManager.loadToGlobal();
+    expect(global['Config']).to.include.keys('SAMPLE_MODULE_PARAM1','SAMPLE_MODULE_PARAM2');
   });
 });

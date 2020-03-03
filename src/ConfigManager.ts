@@ -4,8 +4,7 @@ import * as path from 'path';
 import { ConfigSpecs, ConfigDictionnaryRaw, ConfigDictionnarySimple, ConfigItem } from './types';
 import chalk from 'chalk';
 
-//@ts-ignore
-function clone(object: any): any {
+function clone(object: unknown): unknown {
   return JSON.parse(JSON.stringify(object));
 }
 
@@ -38,7 +37,7 @@ export class ConfigManager {
 
   public getConfig(): ConfigDictionnarySimple {
     // here we clone the config specs so we dont lose the specs
-    const confClone: any = clone(this.specs.config); //process.env;
+    const confClone = clone(this.specs.config); //process.env;
 
     Object.entries(confClone).map(([key, _val]) => {
       confClone[key] = process.env[key];
@@ -46,7 +45,6 @@ export class ConfigManager {
 
     // Hook up functions
     ['Validate', 'Print', 'ValidateField'].map((f: string) => {
-      //@ts-ignore
       confClone[f] = this[f].bind(this);
     });
 
@@ -57,9 +55,14 @@ export class ConfigManager {
     return this.specs.config;
   }
 
+  /**
+   * This function defines what '.env' file will be loaded.
+   * By default, '.env' will be used.
+   * However, if you pass NODE_ENV=abc, the loaded file will
+   * be .env.abc
+   */
   private static getEnvFile(): string {
     const profile = process.env.NODE_ENV || 'production';
-    // console.log('NODE_ENV profile: ', profile);
     const envfile =
       profile == 'production'
         ? path.resolve(process.cwd(), '.env')
@@ -74,35 +77,19 @@ export class ConfigManager {
    */
   public refresh(): void {
     const envfile = ConfigManager.getEnvFile();
-    // console.log('ENV file:', envfile);
     dotenv.config({ path: envfile });
-    // const ENV = process.env;
-
-    // console.log(ENV);
-    // this.filteredEnv = Object.entries(process.env).filter(([key, val]) => {
-    //   return key.startsWith('SAMPLE');
-    // });
-    // ConfigManager.instance = new ConfigManager(this.specs)
   }
-
-  // assert((ConfigManager.instance.polkadot.nodeName || '').length > 0, "The extracted config does not look OK")
-  // }
 
   /** Calling this function will get an instance of the Config and attach it
    * to the global scope.
    */
-  // public static loadToGlobal(): void {
-  //   global['Config'] = ConfigManager.getInstance().getConfig();
-  // }
+  public static loadToGlobal(): void {
+    global['Config'] = ConfigManager.getInstance().getConfig();
+  }
 
   public getFieldSpecs(key: string): ConfigItem {
-    // console.log('looking for key:', key);
-    
     const configSpecs = this.getSpecs();
-    const res = Object.entries(configSpecs).find(([_key, env]: [string, ConfigItem]) => env.name == key);
-  
-    // console.log('res:', res);
-    
+    const res = Object.entries(configSpecs).find(([_key, env]: [string, ConfigItem]) => env.name == key);    
     return res && res[1] ? res[1] : null ;
   }
 
@@ -142,13 +129,6 @@ export class ConfigManager {
     });
     return result;
   }
-
-  /** Show the ENV variables this application cares about */
-  // public static getSupportedEnv(): ConfigSpecs {
-  //   return ConfigManager.g;
-  // }
-
-
 
   /**
    * Display the current ENV using either the logger you provide or console.log by default.
