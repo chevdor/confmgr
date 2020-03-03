@@ -64,11 +64,6 @@ describe('ConfigManager', () => {
 
   it('Should fail regexp validation', function() {
     process.env.SAMPLE_MODULE_REGEXP = '123_45';
-    const configSpecs = ConfigManager.getInstance(specs).getSpecs();
-    // console.log('specs', configSpecs);
-    const config = ConfigManager.getInstance(specs).getConfig();
-    // console.log('config', config);
-
     const res = ConfigManager.getInstance().Validate();
     expect(res).to.be.false;
   });
@@ -84,5 +79,37 @@ describe('ConfigManager', () => {
     const config = ConfigManager.getInstance(specs);
     const res = config.Validate();
     expect(res).to.be.false;
+  });
+
+
+  it('Should get field specs', function() {
+    const config = ConfigManager.getInstance(specs);
+    const fieldSepcs = config.getFieldSpecs('SAMPLE_MODULE_MANDAT1');
+    // console.log('fieldSepcs', fieldSepcs);
+    expect(fieldSepcs.name).to.equal('SAMPLE_MODULE_MANDAT1');
+    expect(fieldSepcs.description).to.equal('some mandatory param');
+    expect(fieldSepcs.options).include.keys('mandatory');
+    
+  });
+
+  it('Should not fails requesting non existant field specs', function() {
+    const config = ConfigManager.getInstance(specs);
+    const fieldSepcs = config.getFieldSpecs('SAMPLE_MODULE_FOO');
+    expect(fieldSepcs).to.be.null;
+  });
+
+  it('Should validate a single field', function() {
+    let config;
+    
+    process.env.SAMPLE_MODULE_REGEXP = '22_33';
+    config = ConfigManager.getInstance(specs).getConfig();
+    
+    expect(config['SAMPLE_MODULE_REGEXP']).to.equal('22_33');
+    expect(config.ValidateField('SAMPLE_MODULE_REGEXP')).to.be.true;
+
+    process.env.SAMPLE_MODULE_REGEXP = '222_33';
+    config = ConfigManager.getInstance(specs).getConfig();
+    expect(config['SAMPLE_MODULE_REGEXP']).to.equal('222_33');
+    expect(config.ValidateField('SAMPLE_MODULE_REGEXP')).to.be.false;
   });
 });

@@ -42,6 +42,9 @@ You may now use your config:
 include::samples/01_ts_basic_valid/index.ts[]
 ----
 
+
+WARNING: You should never display your config, especially in your logs, as it may contain some secrets! Instead, use the Print() method of the ConfigManager, it will mask sensible data.
+
 == Dev
 
 First run:

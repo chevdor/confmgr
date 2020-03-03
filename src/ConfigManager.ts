@@ -2,10 +2,17 @@ import * as process from 'process';
 import dotenv from 'dotenv';
 import * as path from 'path';
 import { ConfigSpecs, ConfigDictionnaryRaw, ConfigDictionnarySimple, ConfigItem } from './types';
+import chalk from 'chalk';
 
+//@ts-ignore
 function clone(object: any): any {
   return JSON.parse(JSON.stringify(object));
 }
+
+  type PrintOptions = {
+    color?: boolean;
+    logger?: (...args) => void;
+  }
 
 export class ConfigManager {
   private static instance: ConfigManager;
@@ -38,7 +45,7 @@ export class ConfigManager {
     });
 
     // Hook up functions
-    ['Validate', 'DumpEnv'].map((f: string) => {
+    ['Validate', 'Print', 'ValidateField'].map((f: string) => {
       //@ts-ignore
       confClone[f] = this[f].bind(this);
     });
@@ -88,20 +95,50 @@ export class ConfigManager {
   //   global['Config'] = ConfigManager.getInstance().getConfig();
   // }
 
+  public getFieldSpecs(key: string): ConfigItem {
+    // console.log('looking for key:', key);
+    
+    const configSpecs = this.getSpecs();
+    const res = Object.entries(configSpecs).find(([_key, env]: [string, ConfigItem]) => env.name == key);
+  
+    // console.log('res:', res);
+    
+    return res && res[1] ? res[1] : null ;
+  }
+
+  /**
+   * This is the actual function performing the validation of a given field according to the spcs
+   * @param specs The specs
+   */
+  private static validaFieldsSpecs(specs: ConfigItem): boolean {
+    let result = true;
+    if (specs && specs.options) {
+      const value = process.env[specs.name] || '';
+      if (specs.options.regexp != undefined) {
+        const regex = RegExp(specs.options.regexp);
+        const testResult = regex.test(value);
+        result = result && testResult;
+      }
+      result = result && (!specs.options.mandatory || (specs.options.mandatory && value.length > 0));
+    }
+    return result;
+  }
+
+  /**
+   * Validate a single field.
+   * @param key Key of the field
+   */
+  public ValidateField(key: string): boolean {
+    const fieldSpecs = this.getFieldSpecs(key);
+    return ConfigManager.validaFieldsSpecs(fieldSpecs);
+  }
+
   /** Validate the config and return wheather it is valid or not */
   public Validate(): boolean {
     let result = true;
     const configSpecs = this.getSpecs();
     Object.entries(configSpecs).map(([_key, env]: [string, ConfigItem]) => {
-      if (env && env.options) {
-        const value = process.env[env.name] || '';
-        if (env.options.regexp != undefined) {
-          const regex = RegExp(env.options.regexp);
-          const testResult = regex.test(value);
-          result = result && testResult;
-        }
-        result = result && (!env.options.mandatory || (env.options.mandatory && value.length > 0));
-      }
+      result = result = ConfigManager.validaFieldsSpecs(env);
     });
     return result;
   }
@@ -111,28 +148,49 @@ export class ConfigManager {
   //   return ConfigManager.g;
   // }
 
+
+
   /**
-   * Display the current ENV to ensure everything that is used matches
-   * the expectations.
+   * Display the current ENV using either the logger you provide or console.log by default.
    */
-  //@ts-ignore
-  public DumpEnv(logger: (...args) => void): void {
+  public Print(opt: PrintOptions): void {
     const container = `${this.specs.container.prefix}_${this.specs.container.module}`;
-    logger(`===> ${container} ENV:`);
+    if (!opt.logger) opt.logger = console.log;
+    
+    if (opt.color)
+      opt.logger(chalk.blue(`===> ${container} ENV:`));
+    else
+      opt.logger(`===> ${container} ENV:`);
+
     Object.entries(this.specs.config).map(([_key, env]) => {
-      logger(
-        `- ${env.name.replace(container + '_', '')}: ${env.description}\n${
-          env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
-        }    value: ${
-          env.options && env.options.masked
-            ? process.env[env.name]
-              ? '*****'
-              : 'empty'
-            : process.env[env.name]
-        }`
-      );
+      const valid = ConfigManager.validaFieldsSpecs(env);
+      if (opt.color)
+        opt.logger(
+          chalk[valid?'green':'red'](`${valid?'✅':'❌'} ${env.name.replace(container + '_', '')}: ` + chalk.grey(`${env.description}`)
+          +chalk[valid?'white':'red'](`\n${
+            env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
+          }    value: ${
+            env.options && env.options.masked
+              ? process.env[env.name]
+                ? '*****'
+                : 'empty'
+              : process.env[env.name]
+          }`)
+          ));
+      else
+        opt.logger(
+          `${valid?'✅':'❌'} ${env.name.replace(container + '_', '')}: ${env.description}` +`\n${
+            env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
+          }    value: ${
+            env.options && env.options.masked
+              ? process.env[env.name]
+                ? '*****'
+                : 'empty'
+              : process.env[env.name]
+          }`
+        );
     });
 
-    logger('========================================');
+    opt.logger('========================================');
   }
 }

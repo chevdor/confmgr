@@ -5,4 +5,4 @@ const config = ConfigManager.getInstance(mySpecs).getConfig();
 const valid = config.Validate();
 console.log(`Your config is${valid ? '' : ' NOT'} valid!`);
 
-config.DumpEnv(console.log);
+config.Print({color:false});
