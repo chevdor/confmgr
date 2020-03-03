@@ -1,5 +1,5 @@
-const ConfigManager = require('envconfman');
-const mySpecs = require('./configSpecs');
+const ConfigManager = require('envconfman').ConfigManager;
+const mySpecs = require('./configSpecs').default;
 // console.log('My specs:', JSON.stringify( mySpecs, null, 2));
 
 const config = ConfigManager.getInstance(mySpecs).getConfig();

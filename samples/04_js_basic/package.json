@@ -1,13 +1,14 @@
 {
-  "name": "03_js_basic",
+  "name": "js_basic",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "clean": "rm -rf node_modules"
   },
   "license": "ISC",
   "dependencies": {
-    "envconfman": "^0.1.3"
+    "envconfman": "^0.1.4"
   }
 }

@@ -1,0 +1,7 @@
+
+    npm init -y
+    tsc --init
+    npm install envconfman ts-node --save
+    Add a start script to your package.json: "start": "ts-node index.ts"
+
+Create an .env file matching your specs.

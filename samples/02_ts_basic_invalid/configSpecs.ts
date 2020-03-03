@@ -1,4 +1,4 @@
-import { SpecsFactory } from '../../src/SpecsFactory';
+import { SpecsFactory } from 'envconfman';
 
 const prefix = 'TS_SAMPLE';
 const mod = 'MODULE_01';
