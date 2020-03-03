@@ -5,7 +5,9 @@
 
 == Intro
 
-This module makes management of your config a breeze.
+This module makes management of your config 100% transparent while easy.
+
+image::doc/logo.png[align=center, width=20%]
 
 In short:
 
