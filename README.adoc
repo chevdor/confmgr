@@ -23,6 +23,22 @@ In short:
 
 == Usage
 
+=== Quick Version
+
+.npm
+    npm install --save confmgr
+
+.yarn 
+    yarn add confmgr
+
+.javascript
+    const ConfigManager = require('confmgr').ConfigManager;
+
+.typescript
+    import { ConfigManager } from 'confmgr';
+
+=== Some details
+
 You may have a look at the samples in the `samples` folder. There are simple demos in Typescript and Javascript.
 
 In short, you first need to define the specs of your config. You can do that using Yaml or using a Factory directly, as shown below:
