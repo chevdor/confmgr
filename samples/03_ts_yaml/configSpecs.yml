@@ -1,0 +1,16 @@
+TS_SAMPLE:
+  MODULE_01:
+    PARAM1:
+      description: some param1
+    PARAM2:
+      description: some param2
+    SECRET:
+      description: some secret
+      masked: true
+    REGEXP:
+      description: some regexp
+      regexp: ^\d{2}_\d{2}
+    MANDAT1:
+      description: some mandatory param
+      mandatory: true
+      default: 42

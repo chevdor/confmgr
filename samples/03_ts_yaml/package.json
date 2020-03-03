@@ -1,0 +1,18 @@
+{
+  "name": "ts_yaml",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "clean": "rm -rf node_modules build *.js"
+  },
+  "dependencies": {
+    "confmgr": "^0.1",
+    "ts-node": "^8.6.2"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.2"
+  }
+}

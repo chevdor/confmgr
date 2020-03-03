@@ -1,0 +1,10 @@
+
+= TS Basic with INvalid .env
+
+This is a Typescript sample.
+
+Run with the following:
+
+    yarn clean
+    yarn
+    yarn start

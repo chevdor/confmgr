@@ -1,17 +1,20 @@
 import * as process from 'process';
 import dotenv from 'dotenv';
 import * as path from 'path';
-import { ConfigSpecs, ConfigDictionnaryRaw, ConfigDictionnarySimple, ConfigItem } from './types';
+import { ConfigSpecs, ConfigDictionnaryRaw, ConfigDictionnarySimple, ConfigItem, ConfigItemOptions } from './types';
 import chalk from 'chalk';
+import YAML from 'yaml';
+import fs from 'fs';
+import { SpecsFactory } from './SpecsFactory';
 
 function clone(object: unknown): unknown {
   return JSON.parse(JSON.stringify(object));
 }
 
-  type PrintOptions = {
-    color?: boolean;
-    logger?: (...args) => void;
-  }
+type PrintOptions = {
+  color?: boolean;
+  logger?: (...args) => void;
+}
 
 export class ConfigManager {
   private static instance: ConfigManager;
@@ -24,12 +27,44 @@ export class ConfigManager {
     this.refresh();
   }
 
-  public static getInstance(specs?: ConfigSpecs): ConfigManager {
+  public static loadSpecsFromYaml(file: string): ConfigSpecs {
+    const configFile = fs.readFileSync(file, 'utf8');
+    const yaml = YAML.parse(configFile);
+    
+    try {
+      const prefix = Object.keys(yaml)[0];
+      const module = Object.keys(yaml[prefix])[0];
+      const factory = new SpecsFactory({ prefix, module });
+      
+      Object.keys(yaml[prefix][module]).map((key: string) => {
+        const shortKey = key.replace(`${prefix}_${module}_`, '');
+        const description: string = yaml[prefix][module][shortKey].description;
+        const opt: ConfigItem = yaml[prefix][module][shortKey];
+        delete opt.description;
+        const options: ConfigItemOptions = opt as ConfigItemOptions;
+        factory.appendSpec(factory.getSpec(shortKey, description, options));
+      });
+      
+      return factory.getSpecs();
+      
+    } catch (e){
+      console.log('Error parsing YAML', e);
+    }
+    return null;
+  }
+
+  public static getInstance(specs?: ConfigSpecs | string): ConfigManager {
     if (!this.instance && !specs) {
       throw new Error('Missing specs');
     }
     if (!this.instance && specs) {
-      this.instance = new ConfigManager(specs);
+      if (typeof (specs) === 'string') {
+        console.log('Init via YAML');
+        this.instance = new ConfigManager(ConfigManager.loadSpecsFromYaml(specs));
+      } else {
+        console.log('Init via Factory');
+        this.instance = new ConfigManager(specs);
+      }
     }
 
     return this.instance;
@@ -101,6 +136,7 @@ export class ConfigManager {
     let result = true;
     if (specs && specs.options) {
       const value = process.env[specs.name] || '';
+      
       if (specs.options.regexp != undefined) {
         const regex = RegExp(specs.options.regexp);
         const testResult = regex.test(value);
