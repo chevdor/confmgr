@@ -68,15 +68,33 @@ export class ConfigManager {
     return this.instance;
   }
 
+  /**
+   * You should not use this function. It is there only for testing.
+   */
+  public static clearInstance(): void {
+    this.instance = undefined;
+  }
+
+  /**
+   * This retrieves the config and fills defaults.
+   * Additionnaly, the config object you get is decorated with a few helper fonctions
+   * such as Print, Validate, etc... to help you easily use your config
+   */
   public getConfig(): ConfigDictionnarySimple {
     // here we clone the config specs so we dont lose the specs
     const confClone = clone(this.specs.config); //process.env;
+    const specs = this.getSpecs();
 
     Object.entries(confClone).map(([key, _val]) => {
       confClone[key] = process.env[key];
+
+      // Here we check if we need to apply some default values
+      if (!confClone[key] && specs[key].options && specs[key].options.default) {
+        confClone[key] = specs[key].options.default;
+      }
     });
 
-    // Hook up functions
+    // Hook up functions bound to the Singleton object
     ['Validate', 'Print', 'ValidateField'].map((f: string) => {
       confClone[f] = this[f].bind(this);
     });
@@ -111,6 +129,7 @@ export class ConfigManager {
   public refresh(): void {
     const envfile = ConfigManager.getEnvFile();
     dotenv.config({ path: envfile });
+
   }
 
   /** Calling this function will get an instance of the Config and attach it
@@ -130,17 +149,20 @@ export class ConfigManager {
    * This is the actual function performing the validation of a given field according to the spcs
    * @param specs The specs
    */
-  private static validaFieldsSpecs(specs: ConfigItem): boolean {
+  private validaFieldsSpecs(specs: ConfigItem): boolean {
     let result = true;
+    const config = this.getConfig();
+
     if (specs && specs.options) {
-      const value = process.env[specs.name] || '';
+      const value = config[specs.name];
       
       if (specs.options.regexp != undefined) {
         const regex = RegExp(specs.options.regexp);
         const testResult = regex.test(value);
         result = result && testResult;
       }
-      result = result && (!specs.options.mandatory || (specs.options.mandatory && value.length > 0));
+
+      result = result && (!specs.options.mandatory || (specs.options.mandatory && value !== undefined));
     }
     return result;
   }
@@ -151,7 +173,7 @@ export class ConfigManager {
    */
   public ValidateField(key: string): boolean {
     const fieldSpecs = this.getFieldSpecs(key);
-    return ConfigManager.validaFieldsSpecs(fieldSpecs);
+    return this.validaFieldsSpecs(fieldSpecs);
   }
 
   /** Validate the config and return wheather it is valid or not */
@@ -159,7 +181,7 @@ export class ConfigManager {
     let result = true;
     const configSpecs = this.getSpecs();
     Object.entries(configSpecs).map(([_key, env]: [string, ConfigItem]) => {
-      result = result = ConfigManager.validaFieldsSpecs(env);
+      result = result = this.validaFieldsSpecs(env);
     });
     return result;
   }
@@ -177,8 +199,10 @@ export class ConfigManager {
     else
       opt.logger(`===> ${container} ENV:`);
 
+    const config = this.getConfig();
+
     Object.entries(this.specs.config).map(([_key, env]) => {
-      const valid = ConfigManager.validaFieldsSpecs(env);
+      const valid = this.validaFieldsSpecs(env);
       if (opt.color)
         opt.logger(
           chalk[valid?'green':'red'](`${valid?'✅':'❌'} ${env.name.replace(container + '_', '')}: ` + chalk.grey(`${env.description}`)
@@ -186,10 +210,10 @@ export class ConfigManager {
             env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
           }    value: ${
             env.options && env.options.masked
-              ? process.env[env.name]
+              ? config[env.name]
                 ? '*****'
                 : 'empty'
-              : process.env[env.name]
+              : config[env.name]
           }`)
           ));
       else
@@ -198,10 +222,10 @@ export class ConfigManager {
             env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
           }    value: ${
             env.options && env.options.masked
-              ? process.env[env.name]
+              ? config[env.name]
                 ? '*****'
                 : 'empty'
-              : process.env[env.name]
+              : config[env.name]
           }`
         );
     });
