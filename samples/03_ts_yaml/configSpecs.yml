@@ -1,5 +1,5 @@
-TS_SAMPLE:
-  MODULE_01:
+SAMPLE:
+  MODULE:
     PARAM1:
       description: some param1
     PARAM2:

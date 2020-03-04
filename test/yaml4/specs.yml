@@ -1,0 +1,15 @@
+SAMPLE:
+  MODULE:
+    PARAM1:
+      description: some param1
+  MODULE2:
+    PARAM1:
+      description: some param1
+SAMPLE2:
+  MODULE:
+    PARAM1:
+      description: some param1
+  MODULE2:
+    PARAM1:
+      description: some param1
+   

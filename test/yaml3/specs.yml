@@ -20,3 +20,25 @@ SAMPLE:
     OPTIONAL_WITH_DEF:
       description: some optional param
       default: 27
+  MODULE2:
+    PARAM1:
+      description: some param1
+    PARAM2:
+      description: some param2
+    SECRET:
+      description: some secret
+      masked: true
+    REGEXP:
+      description: some regexp
+      regexp: ^\d{2}_\d{2}
+    MANDAT_WITH_DEF:
+      description: some optional param
+      mandatory: true
+      default: 42
+    MANDAT_NO_DEF:
+      description: some optional param
+      mandatory: true
+    OPTIONAL_WITH_DEF:
+      description: some optional param
+      default: 27
+

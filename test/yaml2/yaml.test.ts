@@ -13,11 +13,11 @@ describe('Yaml #2', () => {
   it('Should load Yaml config', function () {
     const config = ConfigManager.getInstance(path.join(__dirname, 'specs.yml')).getConfig();
     expect(config).to.includes.keys(
-      'TS_SAMPLE_MODULE_01_PARAM1',
-      'TS_SAMPLE_MODULE_01_PARAM2',
-      'TS_SAMPLE_MODULE_01_SECRET',
-      'TS_SAMPLE_MODULE_01_REGEXP',
-      'TS_SAMPLE_MODULE_01_MANDAT_NO_DEF'
+      'SAMPLE_MODULE_PARAM1',
+      'SAMPLE_MODULE_PARAM2',
+      'SAMPLE_MODULE_SECRET',
+      'SAMPLE_MODULE_REGEXP',
+      'SAMPLE_MODULE_MANDAT_NO_DEF'
     );
   });
 });

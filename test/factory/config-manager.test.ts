@@ -1,22 +1,11 @@
-import { ConfigManager } from '../src/ConfigManager';
+import { ConfigManager } from '../../src/ConfigManager';
 import { expect } from 'chai';
 import specs from './config-specs';
-
-const param1 = '42';
-const param2 = 'r=3.14';
-const secret = 'password123';
-const regexp = '12_34';
-
-// Here we set some ENV for testing
-function loadDefaultEnv(): void {
-  process.env.SAMPLE_MODULE_PARAM1 = param1;
-  process.env.SAMPLE_MODULE_PARAM2 = param2;
-  process.env.SAMPLE_MODULE_SECRET = secret;
-  process.env.SAMPLE_MODULE_REGEXP = regexp;
-}
+import { clearEnv, loadDefaultEnv, param1, param2, secret, regexp } from '../helpers';
 
 describe('ConfigManager', () => {
   beforeEach(function() {
+    clearEnv();
     loadDefaultEnv();
   });
 

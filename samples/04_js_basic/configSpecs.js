@@ -1,6 +1,6 @@
 const SpecsFactory = require('confmgr');
-const prefix = 'TS_SAMPLE';
-const mod = 'MODULE_01';
+const prefix = 'SAMPLE';
+const mod = 'MODULE';
 const factory = new SpecsFactory.SpecsFactory({ prefix: prefix, module: mod });
 factory.appendSpec(factory.getSpec('PARAM1', 'some param1'));
 factory.appendSpec(factory.getSpec('PARAM2', 'some param2'));

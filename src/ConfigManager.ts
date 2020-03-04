@@ -31,26 +31,23 @@ export class ConfigManager {
     const configFile = fs.readFileSync(file, 'utf8');
     const yaml = YAML.parse(configFile);
     
-    try {
-      const prefix = Object.keys(yaml)[0];
-      const module = Object.keys(yaml[prefix])[0];
-      const factory = new SpecsFactory({ prefix, module });
+    if (Object.keys(yaml)[1]) throw new Error('Multiple prefixes is not supported yet. Get in touch if you see a need.');
+    const prefix = Object.keys(yaml)[0];
+    if (Object.keys(yaml[prefix])[1]) throw new Error('Multiple modules is not supported yet. Get in touch if you see a need.');
+    const module = Object.keys(yaml[prefix])[0];
+
+    const factory = new SpecsFactory({ prefix, module });
       
-      Object.keys(yaml[prefix][module]).map((key: string) => {
-        const shortKey = key.replace(`${prefix}_${module}_`, '');
-        const description: string = yaml[prefix][module][shortKey].description;
-        const opt: ConfigItem = yaml[prefix][module][shortKey];
-        delete opt.description;
-        const options: ConfigItemOptions = opt as ConfigItemOptions;
-        factory.appendSpec(factory.getSpec(shortKey, description, options));
-      });
+    Object.keys(yaml[prefix][module]).map((key: string) => {
+      const shortKey = key.replace(`${prefix}_${module}_`, '');
+      const description: string = yaml[prefix][module][shortKey].description;
+      const opt: ConfigItem = yaml[prefix][module][shortKey];
+      delete opt.description;
+      const options: ConfigItemOptions = opt as ConfigItemOptions;
+      factory.appendSpec(factory.getSpec(shortKey, description, options));
+    });
       
-      return factory.getSpecs();
-      
-    } catch (e){
-      console.log('Error parsing YAML', e);
-    }
-    return null;
+    return factory.getSpecs();
   }
 
   public static getInstance(specs?: ConfigSpecs | string): ConfigManager {
