@@ -6,8 +6,8 @@ NOTE: This is the short version of the README. You can find more [here](https://
 
 Why *another* one? `confmgr` brings interesting features that are not available in libs. While focusing on ease of use, it brings features that no longer need to be part of your app such as:
 
-- type conversion (variables from ENV are always strings, `confmgr` converts them for your)
-- mandatory values: if you miss a value, `confmgr` will tell you
+- type conversion (variables from ENV are always strings, `confmgr` converts them for you)
+- mandatory values: if you miss a value, `confmgr`  will tell you before your app explodes...
 - default values: `confmrg` handles default values for you
 - regular expressions: `confmgr` allows you defining a regexp that will allow checking the validity of the loaded config
 - masked variables: handy for your secrets, read below
@@ -64,7 +64,6 @@ MYAPP:
       type: number
       default: 42
     
-    
     VAR3:
       description: some array
       type: array
@@ -84,7 +83,7 @@ MYAPP:
       default: 42
 
     VAR7:
-      description: Some variable we check with a regpex
+      description: Some variable we check with a regular expression
       regexp: ^\d{2}_\d{2}      
  
 ```

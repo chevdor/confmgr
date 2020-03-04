@@ -1,0 +1,6 @@
+
+== Contributing
+
+If you are considering contributing, you will find many ways to apply your skills. There is still a lot that can be done in this project. Feel free to submit any PR you think may improve the lib or stop by the issue list and check the https://gitlab.com/chevdor/confmgr/issues?label_name%5B%5D=Contribution+Welcome[Contributions Welcome] label, it may give you a few ideas.
+
+You may report any bug or submit your PRs at https://gitlab.com/chevdor/confmgr

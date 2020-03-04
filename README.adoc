@@ -5,51 +5,222 @@
 
 == Intro
 
-This module makes management of your config 100% transparent while easy.
+`confmgr` is (yet another) configuration manager for your NodeJS apps. It is written in Typescript and thus supports Typescript as well as Javascript. 
 
-image::doc/logo.png[align=center, width=20%]
+.Why *another* one? 
+`confmgr` brings interesting features that are not available in libs. While focusing on ease of use, it brings features that no longer need to be part of your app such as:
 
+.Features at a glance
+- type conversion (variables from ENV are always strings, `confmgr` converts them for you)
+- mandatory values: If you miss a value, `confmgr` will tell you before your app explodes...
+- default values: `confmrg` handles default values for you
+- regular expressions: `confmgr` allows you defining a regexp that will allow checking the validity of the loaded config
+- masked variables: handy for your secrets, read below
+
+.Helper functions
+After getting your config object with `GetConfig()`, you can simple use it with `config['MYAPP_MYMODULE_VAR1']` or use some of the helper methods attached to your config.
+
+`confmgr` brings a set of handy methods such as `Print()` that will display the content of your config while ensuring that your secrets do NOT show up in any log or output.
+
+Printing your config may use colors or not. Here is an example with color coming from running `config.Print()`:
+
+```
+===> TS_SAMPLE_MODULE_01 ENV:
+✅ PARAM1: some param1
+    value: 12
+✅ PARAM2: some param2
+    value: 44
+✅ SECRET: some secret
+    value: *****                                <---- Notice how this value has been masked
+✅ REGEXP: some regexp
+    regexp: ^\d{2}_\d{2}
+    value: 68_77
+✅ MANDAT_WITH_DEF: some optional param
+    value: 42
+❌ MANDAT_NO_DEF: some optional param           <----- It looks like we forgot to pass a value
+    value: undefined
+```
+
+NOTE: If you are using a custom logger, you may also pass it to the `Print()` method so the output gets nicely integrated to your logs while NOT revealing any of your secrets.
+
+== In a nutshell
+
+=== Install
+
+.Using NPM
+    npm install --save confmgr
+
+.Using Yarn
+
+    yarn add confmgr
+
+=== Usage
+
+[source,typescript]
+----
+    import { ConfigManager } from 'confmgr';
+
+    const config = ConfigManager.getInstance('configSpecs.yml').getConfig();
+    const valid = config.Validate();
+    console.log(`Your config is${valid ? '' : ' NOT'} valid!`);
+    config.Print();
+----
+
+The repo contains many more samples in both Typescript and Javascript, using YML and the Specs Factory.
+
+=== Features
 In short:
 
-- Available for Typescript or Javascript
 - Written in Typescript
-- You create your config specs using a Factory or a Yaml file
-- Your config is then loaded from your ENV or .env file
+- Available for Typescript or Javascript
+- You create your config specs using a Factory or a YAML file (Using YAML is recommended)
+- Your config is loaded from your ENV or an .env file
 - Support for multiple .env (debug, etc...)
 - Your config is validated according to your specs
 - Your config is made available to you in a super easy way
-- You can Print your config using your logger
-- confmgr protects your secret and will never display them
+- You can Print your config in color using the console or use your own logger
+- protects your secret and will never display them
+- will check for value you defined as mandatory and warn you if they are missing
+- supports default values and will apply them has needed
+- supports type for an easy conversion from string to whatever your app needs
 
+== Config Specs
 
+In order to bring a `config` object to your app, you need define some specs first.
+
+That can be done via code using the provided Factory (see samples in the samples folder of the repo). You can also simply provide the specs as a YAML file.
+
+Writing the specs as a YAML file makes it simple to also share the specs of your app to your users as this is very readable.
+
+Here is how a spec file in the YAML format looks like:
+
+[source, yaml]
+----
+include::doc/sample.yml[]
+----
+
+== Config values
+
+You may pass values as Environment Variables as shown below:
+
+    MYAPP_MODULE_VAR1='foo bar' node index.js
+
+You may also simply create an `.env` file at the root of your project:
+
+    # Here is a comment
+    MYAPP_MODULE_VAR1='foo bar'
+
+You may then simply start your app and the config will be loaded, validated and made available to you.
+
+    node index.js
 
 == YAML Config Specs format
 
-=== Prefix
 
-=== Module
+=== Prefix & Module
+
+Have you ever looks at the environment variables on your machine? Give it a go and issue `env`. That`s probably not very pretty...
+Moreover, say your app needs to access a database, using an ENV called `DATABASE` will add even more to this mess.
+
+For this reason, `confmgr` helps you keeps things nice, tidy and collision-free thanks to a `PREFIX` and `MODULE`. Those are 2 strings, usually in CAPS. Any of your configuation value will be prepented with `PREFIX_MODULE_`.
+
+That makes it also very easy to find all the variables of your app using a shell command such as `env | grep MYAPP_MYMODULE`.
+
+The `PREFIX` is the root of your YAML file. You find the `MODULE` just below and then your variables.
+
+NOTE: At the moment, only a single PREFIX and a single MODULE is supported.
 
 === Variable
 
+A variable is usually named in CAPS. In your YAML, it looks like:
+```
+MYAPP:                              # Name of your App
+  MYMODULE:                         # Name of your module
+    VAR1:                           # Here is the simplest example, we named it VAR1
+      description: some string
+```
+
+Having such as spec means our App expects an ENV called `MYAPP_MYMODULE_VAR1` to be defined. At that point, if the variable is missing or contains an incorrect valule, `confmgr` won't do anything as it does not know yet about our needs.
+
+The only requirements to define a new variables are:
+
+- a name (ie. `VAR1`)
+- a description
+
+The description will show up as you Print your config:
+```
+===> TS_SAMPLE_MODULE_01 ENV:
+✅ PARAM1: some param1
+    value: 12
+✅ PARAM2: some param2
+    value: 44
+✅ SECRET: some secret
+    value: *****
+```
+
 === Options
 
-Supported types are: boolean, string, number, array, object
+Options are optional... I said it...
 
+The best to see what they are is to search for the `ConfigItemOptions` type in the code:
+
+[source, typescript]
+----
+include::src/types.ts[tag=ConfigItemOptions]
+----
+
+==== Masked
+
+If a variable is marked as `masked=true`, its value will never be shown when using `Print`.
+
+==== Regexp
+
+You may add validation your variables using a regular expression.
+
+```
+MYAPP:
+  MYMODULE:    
+    REGEXP: 
+      description: some regexp
+      regexp: ^\d{2}_\d{2}
+    
+```
+means and enforces that `MYAPP_MYMODULE_REGEXP` contains a value made of 2 digits followed by underscore and another 2 digits.
+`12_34` would be valid whereas `123_45` is not.
+
+==== Default
+
+If your ENV does not contain this value, the default will be applied.
+
+==== Mandatory
+
+If your ENV does not contain this value and you did not define a `default`, then the validation of your config with `config.Validate()` will fail (= return false) and using `config.Print()` will highlight issues as shown below:
+
+```
+===> TS_SAMPLE_MODULE_01 ENV:
+✅ MANDAT_WITH_DEF: some optional param
+    value: 42
+❌ MANDAT_NO_DEF: some optional param
+    value: undefined
+```
+
+==== Type
+
+The supported types can also be found in the code:
+[source, typescript]
+----
+include::src/types.ts[tag=Type]
+----
 
 == Usage
 
-=== Quick Version
+.Javascript
 
-.npm
-    npm install --save confmgr
-
-.yarn 
-    yarn add confmgr
-
-.javascript
+[source,javascript] 
     const ConfigManager = require('confmgr').ConfigManager;
 
-.typescript
+.Typescript
+[source,typescript] 
     import { ConfigManager } from 'confmgr';
 
 === Some details
@@ -91,8 +262,10 @@ First run:
 
     yarn setup
 
-Then you may for instance:
+Then you may for instance start with the tests:
 
     yarn test:watch
+
+include::CONTRIBUTING.adoc[]
 
 include::samples/README.adoc[leveloffset=+1]

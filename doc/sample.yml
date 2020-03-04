@@ -1,0 +1,32 @@
+MYAPP:                              # Name of your App
+  MYMODULE:                         # Name of your module
+    VAR1:                           # Here is the simplest example, we named it VAR1
+      description: some string
+    
+    VAR2:
+      description: some number
+      type: number
+      default: 42                   # If for some reason, this value is not set, confmgr will set the default value
+    
+    VAR3:
+      description: some array
+      type: array
+      default: ['a', 'b', 'c']
+    
+    VAR4: 
+      description: some object
+      type: array
+      default: { name: "foo", age: 42 }
+
+    VAR5:
+      description: A mandatory variable. If that one is missing, will be unhappy
+      mandatory: true
+     
+    VAR6:
+      description: A optional variable we can count on
+      default: 42
+
+    VAR7:
+      description: Some variable we check with a regpex
+      regexp: ^\d{2}_\d{2}      
+ 
