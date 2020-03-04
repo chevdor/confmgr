@@ -21,6 +21,21 @@ In short:
 - You can Print your config using your logger
 - confmgr protects your secret and will never display them
 
+
+
+== YAML Config Specs format
+
+=== Prefix
+
+=== Module
+
+=== Variable
+
+=== Options
+
+Supported types are: boolean, string, number, array, object
+
+
 == Usage
 
 === Quick Version

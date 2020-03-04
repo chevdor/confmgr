@@ -8,9 +8,6 @@
     "type": "git",
     "url": "https://gitlab.com/chevdor/confmgr"
   },
-  "publishConfig": {
-    "registry": "http://52.167.60.66:8081/repository/npm-oss/"
-  },
   "scripts": {
     "clean": "rm -rf .nyc_output build coverage node_modules out dist lib build docs",
     "setup": "npm install -g ts-node",
@@ -22,7 +19,7 @@
     "build:doc": "typedoc --out docs src",
     "prepublishOnly": "yarn build",
     "prepublish": "tsc"
-  },
+    },
   "author": "chevdor",
   "license": "ISC",
   "keywords": [
