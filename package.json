@@ -1,6 +1,6 @@
 {
   "name": "confmgr",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Env. Configuration Manager",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
