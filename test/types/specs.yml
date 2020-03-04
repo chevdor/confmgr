@@ -1,0 +1,52 @@
+SAMPLE:
+  MODULE:
+    STRING1:
+      description: some string
+      type: string
+      default: 'Hello'
+    NUMBER1:
+      description: some number
+      type: number
+      default: 42
+    BOOL1:
+      description: some boolean
+      type: boolean
+      default: true
+    ARRAY1:
+      description: some array
+      type: array
+      default: ['a', 'b', 'c']
+    OBJECT1:
+      description: some object
+      type: object
+      default: { name: "foo", age: 42}
+    
+    STRING2:
+      description: some string
+      type: string
+      mandatory: true
+    NUMBER2:
+      description: some number
+      type: number
+      mandatory: true
+    BOOL2:
+      description: some boolean
+      type: boolean
+      mandatory: true
+    ARRAY2:
+      description: some array
+      type: array
+      mandatory: true
+    OBJECT2:
+      description: some object
+      type: object
+      mandatory: true
+  
+    BOOL3:
+      description: some boolean
+      type: boolean
+      mandatory: true
+    ARRAY3:
+      description: some array
+      type: array
+      mandatory: true

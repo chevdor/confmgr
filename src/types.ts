@@ -3,9 +3,11 @@ export type ConfigItemOptions = {
   regexp?: RegExp; // validation regexp
   mandatory?: boolean; // Do we explode if this ENV is not defined and there is no default?
   default?: any; // The default if nothing is provided
+  type?: Type;
 };
 
 type ConfigValue = any;
+type Type = 'string' | 'boolean' | 'number' | 'array' | 'object';
 
 export interface ConfigItem {
   name: string; // Name of the envrionment varibale

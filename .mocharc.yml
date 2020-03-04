@@ -13,4 +13,5 @@ require:
 watch-files:
   - 'test/**/*.test.ts'
   - 'src/**/*.ts'
+  - 'test/**/*.yml'
   

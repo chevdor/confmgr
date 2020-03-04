@@ -7,6 +7,10 @@ import YAML from 'yaml';
 import fs from 'fs';
 import { SpecsFactory } from './SpecsFactory';
 
+/**
+ * Helper fonction to clone objects
+ * @param object The object to clone
+ */
 function clone(object: unknown): unknown {
   return JSON.parse(JSON.stringify(object));
 }
@@ -16,17 +20,29 @@ type PrintOptions = {
   logger?: (...args) => void;
 }
 
+/**
+ * The ConfigManager class is where everything happens :)
+ */
 export class ConfigManager {
   private static instance: ConfigManager;
 
   private specs: ConfigSpecs;
 
+  /**
+   * The constructor of ConfigManager is private and is called only
+   * by GetInstance to ensure it works as singleton.
+   * @param specs 
+   */
   private constructor(specs: ConfigSpecs) {
     if (!specs) throw new Error('Missing specs in ctor');
     this.specs = specs;
     this.refresh();
   }
 
+  /**
+   * Load specs from a YAML file
+   * @param file Path of the YAML file
+   */
   public static loadSpecsFromYaml(file: string): ConfigSpecs {
     const configFile = fs.readFileSync(file, 'utf8');
     const yaml = YAML.parse(configFile);
@@ -50,6 +66,10 @@ export class ConfigManager {
     return factory.getSpecs();
   }
 
+  /**
+   * ConfigManager is a singleton.
+   * @param specs The config specs the ConfigManager will rely on
+   */
   public static getInstance(specs?: ConfigSpecs | string): ConfigManager {
     if (!this.instance && !specs) {
       throw new Error('Missing specs');
@@ -72,6 +92,16 @@ export class ConfigManager {
     this.instance = undefined;
   }
 
+  private static stringToBoolean(s: string): boolean {
+    if (typeof(s) === 'boolean') return s;
+
+    switch(s.toLowerCase().trim()){
+      case 'true': case 'yes': case '1': return true;
+      case 'false': case 'no': case '0': case null: return false;
+      default: return Boolean(s);
+    }
+  }
+
   /**
    * This retrieves the config and fills defaults.
    * Additionnaly, the config object you get is decorated with a few helper fonctions
@@ -89,6 +119,36 @@ export class ConfigManager {
       if (!confClone[key] && specs[key].options && specs[key].options.default) {
         confClone[key] = specs[key].options.default;
       }
+
+      // Here we check if a type is defined, and if so, we try to convert
+      if (specs[key].options && specs[key].options.type) {
+        
+        switch (specs[key].options.type) {
+          case 'string':
+            // nothing to do for strings...
+            break;
+            
+          case 'number':
+            confClone[key] = Number(confClone[key]);
+            break;
+            
+          case 'boolean':
+            confClone[key] = ConfigManager.stringToBoolean(confClone[key]);
+            break;
+              
+          case 'array':
+            confClone[key] = typeof (confClone[key]) === 'string' ? JSON.parse(confClone[key]) : confClone[key];
+            break;
+
+          case 'object':            
+            confClone[key] = typeof (confClone[key]) === 'string' ? JSON.parse(confClone[key]) : confClone[key];
+            break;
+
+          default:
+            throw new Error(`Type not supported: ${specs[key].options.type}`);
+        }
+      }
+
     });
 
     // Hook up functions bound to the Singleton object

@@ -1,0 +1,10 @@
+SAMPLE:
+  MODULE:
+    STRING1:
+      description: some string
+      type: foobar
+      default: 'Hello'
+    NUMBER1:
+      description: some number
+      type: number
+      default: 42
