@@ -1,6 +1,6 @@
 {
   "name": "confmgr",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Env. Configuration Manager",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
@@ -19,7 +19,7 @@
     "build:doc": "typedoc --out docs src",
     "prepublishOnly": "yarn build",
     "prepublish": "tsc"
-    },
+  },
   "author": "chevdor",
   "license": "ISC",
   "keywords": [
