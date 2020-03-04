@@ -10,17 +10,14 @@ TS_SAMPLE:
     REGEXP:
       description: some regexp
       regexp: ^\d{2}_\d{2}
-    MANDAT1:
-      description: some mandatory param
+    MANDAT_WITH_DEF:
+      description: some optional param
       mandatory: true
       default: 42
+    MANDAT_NO_DEF:
+      description: some optional param
+      mandatory: true
     OPTIONAL_WITH_DEF:
       description: some optional param
-      mandatory: true
-      default: 42
-    OPTIONAL_NO_DEF:
-      description: some optional param
-      mandatory: true
-    OPTIONAL_NOT_MANDAT_DEF:
-      description: some optional param
       default: 27
+
