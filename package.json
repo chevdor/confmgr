@@ -26,7 +26,7 @@
     "test:check": "yarn lint && yarn test",
     "build": "tsc --build tsconfig.json",
     "build:doc": "typedoc --out docs src",
-    "postinstall": "tsc",
+    "postinstall": "echo 'skipped' || tsc",
     "prepare": "yarn build",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags",
