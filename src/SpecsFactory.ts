@@ -5,6 +5,11 @@ import {
 	ConfigItemOptions,
 } from './types'
 
+/**
+ * The SpecsFactory class is used under the hood when loading your YAML specs.
+ *
+ * This class is also accessible if you want to build your specs from code.
+ */
 export class SpecsFactory {
 	private specs: ConfigSpecs
 

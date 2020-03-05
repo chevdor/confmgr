@@ -7,6 +7,7 @@ import {
 	ConfigDictionnarySimple,
 	ConfigItem,
 	ConfigItemOptions,
+	PrintOptions,
 } from './types'
 import chalk from 'chalk'
 import YAML from 'yaml'
@@ -21,13 +22,11 @@ function clone(object: unknown): unknown {
 	return JSON.parse(JSON.stringify(object))
 }
 
-type PrintOptions = {
-	color?: boolean
-	logger?: (...args) => void
-}
-
 /**
- * The ConfigManager class is where everything happens :)
+ * The ConfigManager class is where everything happens.
+ *
+ * The ConfigManager allows you loading your config specs definition,
+ * it also loads your actual config and lets you access it.
  */
 export class ConfigManager {
 	private static instance: ConfigManager
@@ -106,6 +105,11 @@ export class ConfigManager {
 		this.instance = undefined
 	}
 
+	/**
+	 * This function converts a string to a boolean. It ignores the case and
+	 * support also values such as 0 and 1, yes and no.
+	 * @param s String to convert
+	 */
 	private static stringToBoolean(s: string): boolean {
 		if (typeof s === 'boolean') return s
 
