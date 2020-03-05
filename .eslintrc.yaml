@@ -19,9 +19,7 @@ plugins:
   - '@typescript-eslint'
 rules:
   prettier/prettier: error
-  indent:
-    - error
-    - tab
+  indent: 0
   linebreak-style:
     - error
     - unix
@@ -46,7 +44,7 @@ rules:
     "allowExpressions": true
   }]
   "@typescript-eslint/no-use-before-define": "warn"
-  '@typescript-eslint/indent': ['error', 2]
+  "@typescript-eslint/indent": ['error', 'tab']
   "no-warning-comments": ["warn", {
     "terms":
       ["todo", "fixme", "xxx"], "location": "anywhere"
