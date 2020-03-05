@@ -1,8 +1,8 @@
-import { ConfigManager } from 'confmgr';
-import mySpecs from './configSpecs';
+import { ConfigManager } from 'confmgr'
+import mySpecs from './configSpecs'
 
-const config = ConfigManager.getInstance(mySpecs).getConfig();
-const valid = config.Validate();
-console.log(`Your config is${valid ? '' : ' NOT'} valid!`);
+const config = ConfigManager.getInstance(mySpecs).getConfig()
+const valid = config.Validate()
+console.log(`Your config is${valid ? '' : ' NOT'} valid!`)
 
-config.Print({color:false});
+config.Print({ color: false })

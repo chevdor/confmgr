@@ -1,5 +1,11 @@
 {
     "cSpell.words": [
         "MANDAT"
-    ]
+    ],
+    "prettier.trailingComma": "es5",
+    "prettier.tabWidth": 2,
+    "prettier.requireConfig": true,
+    "prettier.printWidth": 80,
+    "prettier.packageManager": "yarn",
+    "prettier.proseWrap": "always"
 }

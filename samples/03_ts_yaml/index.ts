@@ -1,7 +1,7 @@
-import { ConfigManager } from 'confmgr';
+import { ConfigManager } from 'confmgr'
 
-const config = ConfigManager.getInstance('configSpecs.yml').getConfig();
-const valid = config.Validate();
-console.log(`Your config is${valid ? '' : ' NOT'} valid!`);
+const config = ConfigManager.getInstance('configSpecs.yml').getConfig()
+const valid = config.Validate()
+console.log(`Your config is${valid ? '' : ' NOT'} valid!`)
 
-config.Print();
+config.Print()
