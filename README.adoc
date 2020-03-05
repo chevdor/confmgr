@@ -69,7 +69,6 @@ NOTE: If you are using a custom logger, you may also pass it to the `Print()` me
 The repo contains many more samples in both Typescript and Javascript, using YML and the Specs Factory.
 
 === Features
-In short:
 
 - Written in Typescript
 - Available for Typescript or Javascript
@@ -101,9 +100,14 @@ include::doc/sample.yml[]
 
 == Config values
 
+=== Using ENV Variables
+
 You may pass values as Environment Variables as shown below:
 
     MYAPP_MODULE_VAR1='foo bar' node index.js
+
+
+=== Using default .env file
 
 You may also simply create an `.env` file at the root of your project:
 
@@ -114,15 +118,27 @@ You may then simply start your app and the config will be loaded, validated and 
 
     node index.js
 
-== YAML Config Specs format
+=== Using custom .env file
 
+In some case, you may need different `.env` file for production, testing, staging, dev, etc...
+
+The default as we saw above is 'production' and the file that is loaded is `.env`.
+
+If you provide the Environment Variable `NODE_ENV` however and this value is neither empty nor `production`, an alternate `.env.<...>` file will be loaded.
+
+For instance:
+
+- using `NODE_ENV=dev node index.js` to launch your App will load the config from `.env.dev`
+- using `NODE_ENV=abc node index.js` to launch your App will load the config from `.env.abc`
+
+== YAML Config Specs format
 
 === Prefix & Module
 
 Have you ever looks at the environment variables on your machine? Give it a go and issue `env`. That`s probably not very pretty...
 Moreover, say your app needs to access a database, using an ENV called `DATABASE` will add even more to this mess.
 
-For this reason, `confmgr` helps you keeps things nice, tidy and collision-free thanks to a `PREFIX` and `MODULE`. Those are 2 strings, usually in CAPS. Any of your configuation value will be prepented with `PREFIX_MODULE_`.
+For this reason, `confmgr` helps you keeps things nice, tidy and collision-free thanks to a `PREFIX` and `MODULE`. Those are 2 strings, usually in CAPS. Any of your configuration value will be prepended with `PREFIX_MODULE_`.
 
 That makes it also very easy to find all the variables of your app using a shell command such as `env | grep MYAPP_MYMODULE`.
 
@@ -223,6 +239,8 @@ include::src/types.ts[tag=Type]
 [source,typescript] 
     import { ConfigManager } from 'confmgr';
 
+
+
 === Some details
 
 You may have a look at the samples in the `samples` folder. There are simple demos in Typescript and Javascript.
@@ -230,6 +248,9 @@ You may have a look at the samples in the `samples` folder. There are simple dem
 In short, you first need to define the specs of your config. You can do that using Yaml or using a Factory directly, as shown below:
 
 .Using a Yaml file
+
+This is the commend option and likely the easiest one.
+
 [source,yaml]
 ----
 include::samples/03_ts_yaml/configSpecs.yml[]
@@ -269,3 +290,9 @@ Then you may for instance start with the tests:
 include::CONTRIBUTING.adoc[]
 
 include::samples/README.adoc[leveloffset=+1]
+
+== License
+
+----
+include::LICENSE[]
+----
