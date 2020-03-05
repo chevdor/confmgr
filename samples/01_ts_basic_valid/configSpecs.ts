@@ -1,7 +1,7 @@
 import { SpecsFactory } from 'confmgr';
 
-const prefix = 'SAMPLE';
-const mod = 'MODULE';
+const prefix = 'TS_SAMPLE';
+const mod = 'MODULE_01';
 
 const factory = new SpecsFactory({ prefix, module: mod });
 factory.appendSpec(factory.getSpec('PARAM1', 'some param1'));

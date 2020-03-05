@@ -6,5 +6,5 @@
 
 include::01_ts_basic_valid/README.adoc[leveloffset=+1]
 include::02_ts_basic_invalid/README.adoc[leveloffset=+1]
-// include::03_ts_yaml/README.adoc[leveloffset=+1]
+include::03_ts_yaml/README.adoc[leveloffset=+1]
 include::04_js_basic/README.adoc[leveloffset=+1]
