@@ -1,6 +1,6 @@
 {
   "name": "confmgr",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Env. Configuration Manager",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
@@ -18,8 +18,8 @@
   "scripts": {
     "clean": "rm -rf .nyc_output build coverage node_modules out dist lib build docs .nyc_output",
     "setup": "npm install -g ts-node",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx . && tsc --noEmit --pretty",
-    "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
+    "lint": "eslint --ext .ts . && tsc --noEmit --pretty",
+    "lint:fix": "eslint --ext .ts . --fix",
     "test": "mocha",
     "test:watch": "mocha --watch",
     "test:check": "yarn lint && yarn test",
