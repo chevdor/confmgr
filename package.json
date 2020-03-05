@@ -28,10 +28,10 @@
     "build:doc": "typedoc --out docs src",
     "prepublishOnly": "yarn lint && yarn test",
     "postinstall": "tsc",
-    "prepare" : "yarn build",
-    "preversion" : "yarn lint",
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepare": "yarn build",
+    "preversion": "yarn lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "author": "chevdor",
   "license": "MIT",
@@ -61,6 +61,7 @@
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
     "mocha": "7.1.0",
+    "prettier": "^1.19.1",
     "ts-node": "8.6.2",
     "typedoc": "0.16.10",
     "typescript": "3.8.2",
