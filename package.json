@@ -16,13 +16,16 @@
   ],
   "homepage": "https://gitlab.com/chevdor/confmgr",
   "scripts": {
-    "clean": "rm -rf .nyc_output build coverage node_modules out dist lib build docs",
+    "clean": "rm -rf .nyc_output build coverage node_modules out dist lib build docs .nyc_output",
     "setup": "npm install -g ts-node",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx . && tsc --noEmit --pretty",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
     "test": "mocha",
     "test:watch": "mocha --watch",
     "test:check": "yarn lint && yarn test",
+    "test:coverage1": "TS_NODE_FILES=true mocha — exit — require ts-node/register — colors test/**/*.ts",
+    "test:coverage2": "nyc npm run test",
+    "test2": "nyc mocha",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "build": "tsc --build tsconfig.json",
     "build:doc": "typedoc --out docs src",
@@ -31,6 +34,18 @@
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags -f",
     "prepublishOnly": "yarn lint && yarn test"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
   },
   "author": "chevdor",
   "license": "MIT",
@@ -42,30 +57,31 @@
     "dotenv"
   ],
   "dependencies": {
-    "@babel/runtime": "7.8.4",
+    "@babel/runtime": "7.8.7",
     "chalk": "^3.0.0",
     "dotenv": "8.2.0",
     "ts-node": "8.6.2",
-    "typescript": "3.8.2",
+    "typescript": "^3.8.3",
     "yaml": "^1.7.2"
   },
   "devDependencies": {
     "@types/dotenv": "8.2.0",
-    "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.6",
-    "@typescript-eslint/eslint-plugin": "^2.21.0",
-    "@typescript-eslint/parser": "^2.21.0",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.7.7",
+    "@typescript-eslint/eslint-plugin": "^2.22.0",
+    "@typescript-eslint/parser": "^2.22.0",
     "chai": "4.2.0",
     "eslint": "6.8.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-standard": "4.0.1",
+    "istanbul": "^0.4.5",
     "mocha": "7.1.0",
+    "nyc": "^15.0.0",
     "prettier": "^1.19.1",
     "ts-node": "8.6.2",
-    "typedoc": "0.16.10",
-    "typescript": "3.8.2",
+    "typedoc": "^0.16",
     "yarn": "1.22.0"
   },
   "standard": {
