@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node index.ts",
-    "clean": "rm -rf node_modules build *.js"
+    "clean": "rm -rf node_modules build *.js yarn.lock"
   },
   "dependencies": {
     "confmgr": "^0.1",
