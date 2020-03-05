@@ -46,14 +46,14 @@ export class ConfigManager {
   public static loadSpecsFromYaml(file: string): ConfigSpecs {
     const configFile = fs.readFileSync(file, 'utf8');
     const yaml = YAML.parse(configFile);
-    
+
     if (Object.keys(yaml)[1]) throw new Error('Multiple prefixes is not supported yet. Get in touch if you see a need.');
     const prefix = Object.keys(yaml)[0];
     if (Object.keys(yaml[prefix])[1]) throw new Error('Multiple modules is not supported yet. Get in touch if you see a need.');
     const module = Object.keys(yaml[prefix])[0];
 
     const factory = new SpecsFactory({ prefix, module });
-      
+
     Object.keys(yaml[prefix][module]).map((key: string) => {
       const shortKey = key.replace(`${prefix}_${module}_`, '');
       const description: string = yaml[prefix][module][shortKey].description;
@@ -62,7 +62,7 @@ export class ConfigManager {
       const options: ConfigItemOptions = opt as ConfigItemOptions;
       factory.appendSpec(factory.getSpec(shortKey, description, options));
     });
-      
+
     return factory.getSpecs();
   }
 
@@ -93,9 +93,9 @@ export class ConfigManager {
   }
 
   private static stringToBoolean(s: string): boolean {
-    if (typeof(s) === 'boolean') return s;
+    if (typeof (s) === 'boolean') return s;
 
-    switch(s.toLowerCase().trim()){
+    switch (s.toLowerCase().trim()) {
       case 'true': case 'yes': case '1': return true;
       case 'false': case 'no': case '0': case null: return false;
       default: return Boolean(s);
@@ -122,25 +122,25 @@ export class ConfigManager {
 
       // Here we check if a type is defined, and if so, we try to convert
       if (specs[key].options && specs[key].options.type) {
-        
+
         switch (specs[key].options.type) {
           case 'string':
             // nothing to do for strings...
             break;
-            
+
           case 'number':
             confClone[key] = Number(confClone[key]);
             break;
-            
+
           case 'boolean':
             confClone[key] = ConfigManager.stringToBoolean(confClone[key]);
             break;
-              
+
           case 'array':
             confClone[key] = typeof (confClone[key]) === 'string' ? JSON.parse(confClone[key]) : confClone[key];
             break;
 
-          case 'object':            
+          case 'object':
             confClone[key] = typeof (confClone[key]) === 'string' ? JSON.parse(confClone[key]) : confClone[key];
             break;
 
@@ -198,8 +198,8 @@ export class ConfigManager {
 
   public getFieldSpecs(key: string): ConfigItem {
     const configSpecs = this.getSpecs();
-    const res = Object.entries(configSpecs).find(([_key, env]: [string, ConfigItem]) => env.name == key);    
-    return res && res[1] ? res[1] : null ;
+    const res = Object.entries(configSpecs).find(([_key, env]: [string, ConfigItem]) => env.name == key);
+    return res && res[1] ? res[1] : null;
   }
 
   /**
@@ -212,7 +212,7 @@ export class ConfigManager {
 
     if (specs && specs.options) {
       const value = config[specs.name];
-      
+
       if (specs.options.regexp != undefined) {
         const regex = RegExp(specs.options.regexp);
         const testResult = regex.test(value);
@@ -248,9 +248,9 @@ export class ConfigManager {
    */
   public Print(opt: PrintOptions): void {
     const container = `${this.specs.container.prefix}_${this.specs.container.module}`;
-    if (!opt) opt = {color: true};
+    if (!opt) opt = { color: true };
     if (!opt.logger) opt.logger = console.log;
-    
+
     if (opt.color)
       opt.logger(chalk.blue(`===> ${container} ENV:`));
     else
@@ -262,20 +262,20 @@ export class ConfigManager {
       const valid = this.validaFieldsSpecs(env);
       if (opt.color)
         opt.logger(
-          chalk[valid?'green':'red'](`${valid?'✅':'❌'} ${env.name.replace(container + '_', '')}: ` + chalk.grey(`${env.description}`)
-          +chalk[valid?'white':'red'](`\n${
-            env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
-          }    value: ${
-            env.options && env.options.masked
-              ? config[env.name]
-                ? '*****'
-                : 'empty'
-              : config[env.name]
-          }`)
+          chalk[valid ? 'green' : 'red'](`${valid ? '✅' : '❌'} ${env.name.replace(container + '_', '')}: ` + chalk.grey(`${env.description}`)
+            + chalk[valid ? 'white' : 'red'](`\n${
+              env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
+            }    value: ${
+              env.options && env.options.masked
+                ? config[env.name]
+                  ? '*****'
+                  : 'empty'
+                : config[env.name]
+            }`)
           ));
       else
         opt.logger(
-          `${valid?'✅':'❌'} ${env.name.replace(container + '_', '')}: ${env.description}` +`\n${
+          `${valid ? '✅' : '❌'} ${env.name.replace(container + '_', '')}: ${env.description}` + `\n${
             env.options && env.options.regexp ? '    regexp: ' + env.options.regexp + '\n' : ''
           }    value: ${
             env.options && env.options.masked

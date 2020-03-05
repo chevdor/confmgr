@@ -1,2 +1,2 @@
-configSpecs.js index.js
+*.js
 yarn.lock
