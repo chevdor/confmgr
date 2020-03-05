@@ -1,6 +1,6 @@
 {
   "name": "confmgr",
-  "version": "0.1.9",
+  "version": "0.1.8",
   "description": "Env. Configuration Manager",
   "main": "lib/index.js",
   "types": "lib/index.d.js",
@@ -18,7 +18,7 @@
   "scripts": {
     "clean": "rm -rf .nyc_output build coverage node_modules out dist lib build docs",
     "setup": "npm install -g ts-node",
-    "lint": "echo skipped",
+    "lint": "echo 'skipped' || eslint --ext .js,.jsx,.ts,.tsx . && tsc --noEmit --pretty",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
     "test": "mocha",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
