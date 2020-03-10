@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
-        "MANDAT"
+        "MANDAT",
+        "postversion",
+        "preversion"
     ],
     "prettier.trailingComma": "es5",
     "prettier.tabWidth": 2,
