@@ -41,6 +41,19 @@ build:
 #         - master
 #         - tags
 
+build:pack:
+  stage: build
+  script:
+    - yarn pack
+    - mv *.tgz $CI_PROJECT_DIR/$ARTIFACTS_DIR/
+  artifacts:
+    paths:
+      - $CI_PROJECT_DIR/$ARTIFACTS_DIR
+  only:
+      refs:
+        - master
+        - tags
+
 pages: # This job must be called like that so that publishing works on gitlab
   stage: build
   script:
