@@ -41,7 +41,7 @@ build:
 #         - master
 #         - tags
 
-publish:doc:
+pages: # This job must be called like that so that publishing works
   stage: build
   script:
     - yarn build:doc
