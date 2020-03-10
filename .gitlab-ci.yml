@@ -8,9 +8,9 @@ stages:
   - check
   - test
   - build
+  - publish
 
 before_script:
-  # - echo `pwd` # debug
   - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
   - mkdir -p $CI_PROJECT_DIR/$ARTIFACTS_DIR/
   - yarn --version
@@ -22,6 +22,18 @@ cache:
     - lib
     - node_modules
 
+publish:doc:
+  stage: publish
+  script:
+    - yarn build:doc
+  only:
+    refs:
+      - master
+      - tags
+  artifacts:
+    paths:
+      - docs
+  
 check:lint:
   stage: check
   image: node:11
@@ -34,20 +46,14 @@ test:unit:
   script:
     - yarn test
 
-build:doc:
-  stage: build
-  script:
-    - yarn build:doc
-#   only:
-#       refs:
-#         - master
-#         - tags
-
 build:
   stage: build
   script:
     - yarn build
-
+#   only:
+#       refs:
+#         - master
+#         - tags
 
 after_script:
   - echo "End CI"
