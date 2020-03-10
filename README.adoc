@@ -43,6 +43,11 @@ Printing your config may use colors or not. Here is an example with color coming
 
 NOTE: If you are using a custom logger, you may also pass it to the `Print()` method so the output gets nicely integrated to your logs while NOT revealing any of your secrets.
 
+== Documentation
+
+You can keep reading this file and/or check the `doc` and `samples` folders.
+You can also visit https://chevdor.gitlab.io/confmgr to see the API documentation.
+
 == In a nutshell
 
 === Install

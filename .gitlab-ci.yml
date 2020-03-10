@@ -41,7 +41,7 @@ build:
 #         - master
 #         - tags
 
-pages: # This job must be called like that so that publishing works
+pages: # This job must be called like that so that publishing works on gitlab
   stage: build
   script:
     - yarn build:doc
