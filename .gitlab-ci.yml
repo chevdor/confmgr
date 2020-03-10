@@ -45,13 +45,14 @@ publish:doc:
   stage: build
   script:
     - yarn build:doc
+    - cp -rpf docs public
   only:
     refs:
       - master
       - tags
   artifacts:
     paths:
-      - docs
+      - public
 
 after_script:
   - echo "End CI"
