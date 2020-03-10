@@ -5,10 +5,8 @@ variables:
   ARTIFACTS_DIR: "${CI_COMMIT_REF_NAME}-${CI_COMMIT_SHORT_SHA}"
 
 stages:
-  - check
   - test
   - build
-  - publish
 
 before_script:
   - echo "$CI_BUILD_NAME, $CI_BUILD_REF_NAME $CI_BUILD_STAGE" # debug
@@ -21,21 +19,9 @@ cache:
   paths:
     - lib
     - node_modules
-
-publish:doc:
-  stage: publish
-  script:
-    - yarn build:doc
-  only:
-    refs:
-      - master
-      - tags
-  artifacts:
-    paths:
-      - docs
   
-check:lint:
-  stage: check
+test:lint:
+  stage: test
   image: node:11
   script:
     - yarn lint
@@ -54,6 +40,18 @@ build:
 #       refs:
 #         - master
 #         - tags
+
+publish:doc:
+  stage: build
+  script:
+    - yarn build:doc
+  only:
+    refs:
+      - master
+      - tags
+  artifacts:
+    paths:
+      - docs
 
 after_script:
   - echo "End CI"
