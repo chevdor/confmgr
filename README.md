@@ -1,6 +1,6 @@
 # confmgr
 
-NOTE: This is the short version of the README. You can find more [here](https://gitlab.com/chevdor/confmgr/-/raw/master/README.adoc).
+NOTE: This is the short version of the README. You can find the full [README.adoc here](https://gitlab.com/chevdor/confmgr/-/raw/master/README.adoc). Here is a direct link to the repo [on Gitlab](https://gitlab.com/chevdor/confmgr/).
 
 `confmgr` is (yet another) configuration manager for your NodeJS apps. It is written in Typescript and thus supports Typescript as well as Javascript. 
 
