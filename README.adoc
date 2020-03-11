@@ -187,7 +187,7 @@ The best to see what they are is to search for the `ConfigItemOptions` type in t
 
 [source, typescript]
 ----
-include::src/types.ts[tag=ConfigItemOptions]
+include::src/types/optionTypes.ts[tag=ConfigItemOptions]
 ----
 
 ==== Masked
@@ -230,7 +230,7 @@ If your ENV does not contain this value and you did not define a `default`, then
 The supported types can also be found in the code:
 [source, typescript]
 ----
-include::src/types.ts[tag=Type]
+include::src/types/baseTypes.ts[tag=Type]
 ----
 
 == Usage

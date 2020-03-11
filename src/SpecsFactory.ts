@@ -3,7 +3,7 @@ import {
 	FactoryCtorInitParams,
 	ConfigSpecs,
 	ConfigItemOptions,
-} from './types'
+} from './types/types'
 
 /**
  * The SpecsFactory class is used under the hood when loading your YAML specs.
@@ -26,7 +26,7 @@ export class SpecsFactory {
 		options?: ConfigItemOptions
 	): ConfigItem {
 		const res: ConfigItem = {
-			name: `${this.specs.container.prefix}_${this.specs.container.module}_${name}`,
+			name,
 			description,
 			options,
 		}
@@ -37,9 +37,12 @@ export class SpecsFactory {
 		return this.specs
 	}
 
-	public appendSpec(newSpec: ConfigItem): ConfigSpecs {
+	public appendSpec(module: string, newSpec: ConfigItem): ConfigSpecs {
+		// console.log('appendSpec', module, newSpec)
+
 		if (!this.specs.config) this.specs.config = {}
-		this.specs.config[newSpec.name] = newSpec
+		if (!this.specs.config[module]) this.specs.config[module] = {}
+		this.specs.config[module][newSpec.name] = newSpec
 		return this.specs
 	}
 }
