@@ -10,8 +10,10 @@ describe('Yaml #4', () => {
 		loadDefaultEnv()
 	})
 
-	it('Should not load Yaml config with several prefixes', function() {
-		const yml = path.join(__dirname, 'specs.yml')
-		expect(() => ConfigManager.getInstance(yml)).to.throw(/not supported/i)
+	it('T0601 Should not load Yaml config with several prefixes', function() {
+		const yml = path.join(__dirname, 'multiprefixes.yml')
+		expect(() => ConfigManager.getInstance(yml)).to.throw(
+			/Multiple prefixes is not supported/i
+		)
 	})
 })

@@ -4,11 +4,13 @@ import * as path from 'path'
 import {
 	ConfigSpecs,
 	ConfigDictionnaryRaw,
-	ConfigDictionnarySimple,
 	ConfigItem,
 	ConfigItemOptions,
 	PrintOptions,
-} from './types'
+	ModuleDictionnary,
+	Module,
+	ConfigObject,
+} from './types/types'
 import chalk from 'chalk'
 import YAML from 'yaml'
 import fs from 'fs'
@@ -56,24 +58,29 @@ export class ConfigManager {
 			throw new Error(
 				'Multiple prefixes is not supported yet. Get in touch if you see a need.'
 			)
+
 		const prefix = Object.keys(yaml)[0]
-		if (Object.keys(yaml[prefix])[1])
-			throw new Error(
-				'Multiple modules is not supported yet. Get in touch if you see a need.'
-			)
-		const module = Object.keys(yaml[prefix])[0]
 
-		const factory = new SpecsFactory({ prefix, module })
+		// if (Object.keys(yaml[prefix])[1])
+		// 	throw new Error(
+		// 		'Multiple modules is not supported yet. Get in touch if you see a need.'
+		// 	)
 
-		Object.keys(yaml[prefix][module]).map((key: string) => {
-			const shortKey = key.replace(`${prefix}_${module}_`, '')
-			const description: string = yaml[prefix][module][shortKey].description
-			const opt: ConfigItem = yaml[prefix][module][shortKey]
-			delete opt.description
-			const options: ConfigItemOptions = opt as ConfigItemOptions
-			factory.appendSpec(factory.getSpec(shortKey, description, options))
+		// const module = Object.keys(yaml[prefix])[0]
+		const factory = new SpecsFactory({ prefix })
+		Object.keys(yaml[prefix]).map(module => {
+			Object.keys(yaml[prefix][module]).map((key: string) => {
+				const shortKey = key // key.replace(`${prefix}_${module}_`, '')
+				const description: string = yaml[prefix][module][shortKey].description
+				const opt: ConfigItem = yaml[prefix][module][shortKey]
+				delete opt.description
+				const options: ConfigItemOptions = opt as ConfigItemOptions
+				factory.appendSpec(
+					module,
+					factory.getSpec(shortKey, description, options)
+				)
+			})
 		})
-
 		return factory.getSpecs()
 	}
 
@@ -133,63 +140,79 @@ export class ConfigManager {
 	 * Additionnaly, the config object you get is decorated with a few helper fonctions
 	 * such as Print, Validate, etc... to help you easily use your config
 	 */
-	public getConfig(): ConfigDictionnarySimple {
+	public getConfig(): ConfigObject {
 		// here we clone the config specs so we dont lose the specs
-		const confClone = clone(this.specs.config) //process.env;
+		const confClone: ConfigObject = {
+			values: clone(this.specs.config) as ModuleDictionnary,
+			Print: this.Print.bind(this),
+			Validate: this.Validate.bind(this),
+			ValidateField: this.ValidateField.bind(this),
+		}
+
 		const specs = this.getSpecs()
 
-		Object.entries(confClone).map(([key, _val]) => {
-			confClone[key] = process.env[key]
+		Object.entries(confClone.values).map(
+			([mod, _confItems]: [string, ConfigDictionnaryRaw]) => {
+				Object.entries(confClone.values[mod]).map(([key, _val]) => {
+					const longKey = `${this.specs.container.prefix}_${mod}_${key}`
+					confClone.values[mod][key] = process.env[longKey]
+					// console.log(`assigned ${mod}.${key} = ${confClone.values[mod][key]}`)
 
-			// Here we check if we need to apply some default values
-			if (!confClone[key] && specs[key].options && specs[key].options.default) {
-				confClone[key] = specs[key].options.default
+					// Here we check if we need to apply some default values
+					if (
+						!confClone.values[mod][key] &&
+						specs[mod][key].options &&
+						specs[mod][key].options.default
+					) {
+						confClone.values[mod][key] = specs[mod][key].options.default
+					}
+
+					// Here we check if a type is defined, and if so, we try to convert
+					if (specs[mod][key].options && specs[mod][key].options.type) {
+						switch (specs[mod][key].options.type) {
+							case 'string':
+								// nothing to do for strings...
+								break
+
+							case 'number':
+								confClone.values[mod][key] = Number(confClone.values[mod][key])
+								break
+
+							case 'boolean':
+								confClone.values[mod][key] = ConfigManager.stringToBoolean(
+									confClone.values[mod][key] as string
+								)
+								break
+
+							case 'array':
+								confClone.values[mod][key] =
+									typeof confClone.values[mod][key] === 'string'
+										? JSON.parse(confClone.values[mod][key])
+										: confClone.values[mod][key]
+								break
+
+							case 'object':
+								confClone.values[mod][key] =
+									typeof confClone.values[mod][key] === 'string'
+										? JSON.parse(confClone.values[mod][key])
+										: confClone.values[mod][key]
+								break
+
+							default:
+								throw new Error(
+									`Type not supported: ${specs[mod][key].options.type}`
+								)
+						}
+					}
+				})
 			}
-
-			// Here we check if a type is defined, and if so, we try to convert
-			if (specs[key].options && specs[key].options.type) {
-				switch (specs[key].options.type) {
-					case 'string':
-						// nothing to do for strings...
-						break
-
-					case 'number':
-						confClone[key] = Number(confClone[key])
-						break
-
-					case 'boolean':
-						confClone[key] = ConfigManager.stringToBoolean(confClone[key])
-						break
-
-					case 'array':
-						confClone[key] =
-							typeof confClone[key] === 'string'
-								? JSON.parse(confClone[key])
-								: confClone[key]
-						break
-
-					case 'object':
-						confClone[key] =
-							typeof confClone[key] === 'string'
-								? JSON.parse(confClone[key])
-								: confClone[key]
-						break
-
-					default:
-						throw new Error(`Type not supported: ${specs[key].options.type}`)
-				}
-			}
-		})
-
-		// Hook up functions bound to the Singleton object
-		;['Validate', 'Print', 'ValidateField'].map((f: string) => {
-			confClone[f] = this[f].bind(this)
-		})
+		)
+		// console.log(confClone)
 
 		return confClone
 	}
 
-	public getSpecs(): ConfigDictionnaryRaw {
+	public getSpecs(): ModuleDictionnary {
 		return this.specs.config
 	}
 
@@ -225,55 +248,62 @@ export class ConfigManager {
 		global['Config'] = ConfigManager.getInstance().getConfig()
 	}
 
-	public getFieldSpecs(key: string): ConfigItem {
-		const configSpecs = this.getSpecs()
-		const res = Object.entries(configSpecs).find(
-			([_key, env]: [string, ConfigItem]) => env.name == key
-		)
-		return res && res[1] ? res[1] : null
-	}
-
 	/**
 	 * This is the actual function performing the validation of a given field according to the spcs
 	 * @param specs The specs
 	 */
-	private validaFieldsSpecs(specs: ConfigItem): boolean {
+	private validaFieldsSpecs(module: Module, specs: ConfigItem): boolean {
 		let result = true
-		const config = this.getConfig()
+		const config = this.getConfig().values
 
 		if (specs && specs.options) {
-			const value = config[specs.name]
-
-			if (specs.options.regexp != undefined) {
+			const item = config[module][specs.name]
+			if (specs.options.regexp !== undefined) {
 				const regex = RegExp(specs.options.regexp)
-				const testResult = regex.test(value)
+				const testResult = regex.test(item)
 				result = result && testResult
 			}
 
 			result =
 				result &&
 				(!specs.options.mandatory ||
-					(specs.options.mandatory && value !== undefined))
+					(specs.options.mandatory && item !== undefined))
 		}
 		return result
+	}
+
+	public getFieldSpecs(module: Module, key: string): ConfigItem {
+		const configSpecs = this.getSpecs()
+		const res = Object.entries(configSpecs[module]).find(
+			([_key, env]: [string, ConfigItem]) => env.name == key
+		)
+		return res && res[1] ? res[1] : null
 	}
 
 	/**
 	 * Validate a single field.
 	 * @param key Key of the field
 	 */
-	public ValidateField(key: string): boolean {
-		const fieldSpecs = this.getFieldSpecs(key)
-		return this.validaFieldsSpecs(fieldSpecs)
+	public ValidateField(module: Module, key: string): boolean {
+		const fieldSpecs = this.getFieldSpecs(module, key)
+
+		return this.validaFieldsSpecs(module, fieldSpecs)
 	}
 
 	/** Validate the config and return wheather it is valid or not */
 	public Validate(): boolean {
 		let result = true
 		const configSpecs = this.getSpecs()
-		Object.entries(configSpecs).map(([_key, env]: [string, ConfigItem]) => {
-			result = result = this.validaFieldsSpecs(env)
-		})
+
+		Object.entries(configSpecs).map(
+			([mod, _data]: [Module, ConfigDictionnaryRaw]) => {
+				Object.entries(configSpecs[mod]).map(
+					([_key, env]: [string, ConfigItem]) => {
+						result = result = this.validaFieldsSpecs(mod, env)
+					}
+				)
+			}
+		)
 		return result
 	}
 
@@ -281,58 +311,63 @@ export class ConfigManager {
 	 * Display the current ENV using either the logger you provide or console.log by default.
 	 */
 	public Print(opt: PrintOptions): void {
-		const container = `${this.specs.container.prefix}_${this.specs.container.module}`
+		const container = `${this.specs.container.prefix}`
 		if (!opt) opt = { color: true }
 		if (!opt.logger) opt.logger = console.log
 
 		if (opt.color) opt.logger(chalk.blue(`===> ${container} ENV:`))
 		else opt.logger(`===> ${container} ENV:`)
 
-		const config = this.getConfig()
+		const config = this.getConfig().values
 
-		Object.entries(this.specs.config).map(([_key, env]) => {
-			const valid = this.validaFieldsSpecs(env)
-			if (opt.color)
-				opt.logger(
-					chalk[valid ? 'green' : 'red'](
-						`${valid ? '✅' : '❌'} ${env.name.replace(
-							container + '_',
-							''
-						)}: ` +
-							chalk.grey(`${env.description}`) +
-							chalk[valid ? 'white' : 'red'](
+		Object.entries(this.specs.config).map(
+			([mod, moduleContent]: [Module, ConfigDictionnaryRaw]) => {
+				Object.entries(moduleContent).map(([_key, env]) => {
+					const valid = this.validaFieldsSpecs(mod, env)
+					if (opt.color)
+						opt.logger(
+							chalk[valid ? 'green' : 'red'](
+								`${valid ? '✅' : '❌'} ${env.name.replace(
+									container + '_',
+									''
+								)}: ` +
+									chalk.grey(`${env.description}`) +
+									chalk[valid ? 'white' : 'red'](
+										`\n${
+											env.options && env.options.regexp
+												? '    regexp: ' + env.options.regexp + '\n'
+												: ''
+										}    value: ${
+											env.options && env.options.masked
+												? config[mod][env.name]
+													? '*****'
+													: 'empty'
+												: config[mod][env.name]
+										}`
+									)
+							)
+						)
+					else
+						opt.logger(
+							`${valid ? '✅' : '❌'} ${env.name.replace(
+								container + '_',
+								''
+							)}: ${env.description}` +
 								`\n${
 									env.options && env.options.regexp
 										? '    regexp: ' + env.options.regexp + '\n'
 										: ''
 								}    value: ${
 									env.options && env.options.masked
-										? config[env.name]
+										? config[mod][env.name]
 											? '*****'
 											: 'empty'
-										: config[env.name]
+										: config[mod][env.name]
 								}`
-							)
-					)
-				)
-			else
-				opt.logger(
-					`${valid ? '✅' : '❌'} ${env.name.replace(container + '_', '')}: ${
-						env.description
-					}` +
-						`\n${
-							env.options && env.options.regexp
-								? '    regexp: ' + env.options.regexp + '\n'
-								: ''
-						}    value: ${
-							env.options && env.options.masked
-								? config[env.name]
-									? '*****'
-									: 'empty'
-								: config[env.name]
-						}`
-				)
-		})
+						)
+				})
+			}
+		)
 
 		opt.logger('========================================')
 	}

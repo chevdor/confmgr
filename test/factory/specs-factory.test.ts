@@ -1,18 +1,16 @@
 import { SpecsFactory } from '../../src/SpecsFactory'
 import { expect } from 'chai'
+import { ConfigItem } from '../../src/types/types'
 
-import { ConfigItem } from '../../src/types'
-
-const PREFIX = 'PREFIX'
-const MODULE = 'MODULE'
+const prefix = 'PREFIX'
 
 describe('Specs Factory', () => {
-	it('Should pass', function() {
-		const f = new SpecsFactory({ prefix: PREFIX, module: MODULE })
+	it('T0701 Should pass', function() {
+		const f = new SpecsFactory({ prefix })
 		const param = 'param'
 		const desc = 'some desc'
 
 		const spec: ConfigItem = f.getSpec(param, desc)
-		expect(spec.name).equal(`${PREFIX}_${MODULE}_${param}`)
+		expect(spec.name).equal(`${param}`)
 	})
 })

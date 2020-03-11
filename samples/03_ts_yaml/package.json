@@ -9,7 +9,7 @@
     "clean": "rm -rf node_modules build *.js yarn.lock"
   },
   "dependencies": {
-    "confmgr": "^0.1",
+    "confmgr": "^1",
     "ts-node": "^8.6.2"
   },
   "devDependencies": {
