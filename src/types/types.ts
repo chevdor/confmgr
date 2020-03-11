@@ -28,7 +28,7 @@ export type ConfigDictionnary = {
 }
 
 /**
- * This is a spec item
+ * This is a spec item: key: Specs
  */
 export type ConfigDictionnaryRaw = {
 	[key: string]: ConfigItem
