@@ -307,68 +307,106 @@ export class ConfigManager {
 		return result
 	}
 
+	private printItemColor(
+		mod: Module,
+		item: ConfigItem,
+		opt: PrintOptions
+	): void {
+		const config = this.getConfig().values
+		const container = `${this.specs.container.prefix}`
+		const valid = this.validaFieldsSpecs(mod, item)
+
+		let entry = '    '
+		entry += chalk[valid ? 'green' : 'red'](
+			`${valid ? '✅' : '❌'} ${item.name.replace(container + '_', '')}: `
+		)
+
+		const io = item.options
+
+		// the value itself
+		entry += chalk[valid ? 'white' : 'red'](
+			`${
+				io && io.masked
+					? config[mod][item.name]
+						? '*****'
+						: 'empty'
+					: config[mod][item.name]
+			}`
+		)
+
+		if (!opt.compact) {
+			entry += chalk.grey(`\n    ${item.description}\n`)
+		}
+		if (!opt.compact) {
+			entry += chalk[valid ? 'white' : 'red'](
+				`${io && io.regexp ? '    regexp: ' + io.regexp + '\n' : ''} `
+			)
+		}
+
+		opt.logger(entry)
+	}
+
+	private printItemNoColor(
+		mod: Module,
+		item: ConfigItem,
+		opt: PrintOptions
+	): void {
+		const config = this.getConfig().values
+		const container = `${this.specs.container.prefix}`
+		const valid = this.validaFieldsSpecs(mod, item)
+		let entry = '    '
+		entry += `${valid ? '✅' : '❌'} ${item.name.replace(
+			container + '_',
+			''
+		)}: `
+
+		const io = item.options
+
+		// the value itself
+		entry += `${
+			io && io.masked
+				? config[mod][item.name]
+					? '*****'
+					: 'empty'
+				: config[mod][item.name]
+		}`
+
+		if (!opt.compact) {
+			entry += `\n    ${item.description}\n`
+		}
+		if (!opt.compact) {
+			entry += `${io && io.regexp ? '    regexp: ' + io.regexp + '\n' : ''} `
+		}
+
+		opt.logger(entry)
+	}
+
 	/**
 	 * Display the current ENV using either the logger you provide or console.log by default.
 	 */
 	public Print(opt: PrintOptions): void {
 		const container = `${this.specs.container.prefix}`
 		if (!opt) opt = { color: true }
+		if (opt.color === undefined) opt.color = true
+
 		if (!opt.logger) opt.logger = console.log
 
-		if (opt.color) opt.logger(chalk.blue(`===> ${container} ENV:`))
-		else opt.logger(`===> ${container} ENV:`)
-
-		const config = this.getConfig().values
+		if (opt.color) opt.logger(chalk.blue(`${container}:`))
+		else opt.logger(`${container}:`)
 
 		Object.entries(this.specs.config).map(
 			([mod, moduleContent]: [Module, ConfigDictionnaryRaw]) => {
-				Object.entries(moduleContent).map(([_key, env]) => {
-					const valid = this.validaFieldsSpecs(mod, env)
-					if (opt.color)
-						opt.logger(
-							chalk[valid ? 'green' : 'red'](
-								`${valid ? '✅' : '❌'} ${env.name.replace(
-									container + '_',
-									''
-								)}: ` +
-									chalk.grey(`${env.description}`) +
-									chalk[valid ? 'white' : 'red'](
-										`\n${
-											env.options && env.options.regexp
-												? '    regexp: ' + env.options.regexp + '\n'
-												: ''
-										}    value: ${
-											env.options && env.options.masked
-												? config[mod][env.name]
-													? '*****'
-													: 'empty'
-												: config[mod][env.name]
-										}`
-									)
-							)
-						)
-					else
-						opt.logger(
-							`${valid ? '✅' : '❌'} ${env.name.replace(
-								container + '_',
-								''
-							)}: ${env.description}` +
-								`\n${
-									env.options && env.options.regexp
-										? '    regexp: ' + env.options.regexp + '\n'
-										: ''
-								}    value: ${
-									env.options && env.options.masked
-										? config[mod][env.name]
-											? '*****'
-											: 'empty'
-										: config[mod][env.name]
-								}`
-						)
-				})
+				if (opt.color) opt.logger(chalk.cyan(`  ${mod}:`))
+				else opt.logger(`  ${mod}:`)
+
+				Object.entries(moduleContent).map(
+					([_key, env]: [string, ConfigItem]) => {
+						opt.color
+							? this.printItemColor(mod, env, opt)
+							: this.printItemNoColor(mod, env, opt)
+					}
+				)
 			}
 		)
-
-		opt.logger('========================================')
 	}
 }
