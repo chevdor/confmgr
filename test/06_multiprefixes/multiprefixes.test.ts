@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import path from 'path'
 import { clearEnv, loadDefaultEnv } from '../helpers'
 
-describe('Yaml #4', () => {
+describe('Multiprefixes', () => {
 	beforeEach(function() {
 		ConfigManager.clearInstance()
 		clearEnv()

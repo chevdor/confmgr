@@ -16,6 +16,7 @@ import YAML from 'yaml'
 import fs from 'fs'
 import { SpecsFactory } from './SpecsFactory'
 import { Key, ConfigValue } from './types/baseTypes'
+import { RegexpWithAttributes } from './types/optionTypes'
 
 /**
  * Helper fonction to clone objects
@@ -114,20 +115,22 @@ export class ConfigManager {
 	 */
 	private static stringToBoolean(s: string): boolean {
 		if (typeof s === 'boolean') return s
-
+		let res = null
 		switch (s.toLowerCase().trim()) {
 			case 'true':
 			case 'yes':
 			case '1':
-				return true
+				res = true
 			case 'false':
 			case 'no':
 			case '0':
 			case null:
-				return false
+				res = false
 			default:
-				return Boolean(s)
+				res = Boolean(s)
 		}
+
+		return res
 	}
 
 	public getConfig(): ConfigObject {
@@ -179,9 +182,19 @@ export class ConfigManager {
 								break
 
 							case 'boolean':
+								// console.log(
+								// 	'convert to bool:',
+								// 	// mod,
+								// 	// key,
+								// 	confClone.values[mod][key]
+								// 	// confClone.values
+								// )
+
 								confClone.values[mod][key] = ConfigManager.stringToBoolean(
 									confClone.values[mod][key] as string
 								)
+								// console.log('Converted to:', confClone.values[mod][key])
+
 								break
 
 							case 'array':
@@ -264,7 +277,18 @@ export class ConfigManager {
 		if (specs && specs.options) {
 			const item = config[module][specs.name]
 			if (specs.options.regexp !== undefined) {
-				const regex = RegExp(specs.options.regexp)
+				let regexp_options = {
+					pattern: undefined,
+					attributes: undefined,
+				}
+
+				if (!('pattern' in specs.options.regexp))
+					regexp_options.pattern = specs.options.regexp
+				else {
+					regexp_options = specs.options.regexp as RegexpWithAttributes
+				}
+
+				const regex = RegExp(regexp_options.pattern, regexp_options.attributes)
 				const testResult = regex.test(item)
 				result = result && testResult
 			}
