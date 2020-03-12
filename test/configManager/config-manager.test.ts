@@ -109,11 +109,33 @@ describe('ConfigManager', () => {
 	it('T0014 Should not be affected by Print()', function() {
 		const config = ConfigManager.getInstance(specs).getConfig()
 
-		config.Print()
+		config.Print({ compact: true })
 		expect(config.values.MODULE['PARAM1']).to.equal(param1)
 		expect(config.values.MODULE['PARAM2']).to.equal(param2)
 		expect(config.values.MODULE['SECRET']).to.equal(secret)
 		expect(config.values.MODULE['REGEXP']).to.equal(regexp)
 		expect(() => ConfigManager.getInstance()).to.not.throw()
+	})
+
+	it('T0015 Should call the Getter', function() {
+		const config = ConfigManager.getInstance(specs).getConfig()
+		expect(config.Get('MODULE', 'PARAM1')).to.equal(param1)
+		expect(config.Get('MODULE', 'PARAM2')).to.equal(param2)
+		expect(config.Get('MODULE', 'SECRET')).to.equal(secret)
+		expect(config.Get('MODULE', 'REGEXP')).to.equal(regexp)
+	})
+
+	it('T0016 Should throw when calling Getter on a missing module', function() {
+		const config = ConfigManager.getInstance(specs).getConfig()
+		expect(() => config.Get('MODULE_99', 'PARAM1')).to.throw(
+			/Module .* does not exist/i
+		)
+	})
+
+	it('T0017 Should throw when calling Getter on a missing variable', function() {
+		const config = ConfigManager.getInstance(specs).getConfig()
+		expect(() => config.Get('MODULE', 'PARAM_99')).to.throw(
+			/Key .* does not exist/i
+		)
 	})
 })
