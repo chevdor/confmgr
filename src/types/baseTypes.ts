@@ -1,5 +1,7 @@
 export type ConfigValue = any
 
+export type Key = string
+
 export type Module = string
 
 // tag::Type[]

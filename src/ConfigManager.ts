@@ -15,6 +15,7 @@ import chalk from 'chalk'
 import YAML from 'yaml'
 import fs from 'fs'
 import { SpecsFactory } from './SpecsFactory'
+import { Key, ConfigValue } from './types/baseTypes'
 
 /**
  * Helper fonction to clone objects
@@ -60,13 +61,6 @@ export class ConfigManager {
 			)
 
 		const prefix = Object.keys(yaml)[0]
-
-		// if (Object.keys(yaml[prefix])[1])
-		// 	throw new Error(
-		// 		'Multiple modules is not supported yet. Get in touch if you see a need.'
-		// 	)
-
-		// const module = Object.keys(yaml[prefix])[0]
 		const factory = new SpecsFactory({ prefix })
 		Object.keys(yaml[prefix]).map(module => {
 			Object.keys(yaml[prefix][module]).map((key: string) => {
@@ -144,6 +138,7 @@ export class ConfigManager {
 		// here we clone the config specs so we dont lose the specs
 		const confClone: ConfigObject = {
 			values: clone(this.specs.config) as ModuleDictionnary,
+			Get: this.Get.bind(this),
 			Print: this.Print.bind(this),
 			Validate: this.Validate.bind(this),
 			ValidateField: this.ValidateField.bind(this),
@@ -207,8 +202,6 @@ export class ConfigManager {
 				})
 			}
 		)
-		// console.log(confClone)
-
 		return confClone
 	}
 
@@ -307,6 +300,39 @@ export class ConfigManager {
 		return result
 	}
 
+	/** Check whether the module mod is part of ours specs */
+	private isModuleValid(mod: Module): boolean {
+		const hit = Object.entries(this.specs.config).find(val => val[0] === mod)
+		return hit !== undefined
+	}
+
+	/** Check wether the key is valid. We assume here that the module does exist */
+	private isKeyValid(mod: Module, key: Key): boolean {
+		const hit = Object.entries(this.specs.config[mod]).find(
+			val => val[0] === key
+		)
+		return hit !== undefined
+	}
+
+	/**
+	 * This Getter is the safest way to access your configuration values as it will throw errors in case you try access an invalid module/key
+	 * @param mod
+	 * @param key
+	 */
+	public Get(mod: Module, key: Key): ConfigValue {
+		const moduleExists = this.isModuleValid(mod)
+
+		if (!moduleExists)
+			throw new Error(`Module '${mod}' does not exist in your specs`)
+		const keyExists = this.isKeyValid(mod, key)
+		if (!keyExists)
+			throw new Error(`Key '${mod}/${key}' does not exist in your specs`)
+
+		const config = this.getConfig().values
+
+		return config[mod][key]
+	}
+
 	private printItemColor(
 		mod: Module,
 		item: ConfigItem,
@@ -396,8 +422,8 @@ export class ConfigManager {
 
 		Object.entries(this.specs.config).map(
 			([mod, moduleContent]: [Module, ConfigDictionnaryRaw]) => {
-				if (opt.color) opt.logger(chalk.cyan(`  ${mod}:`))
-				else opt.logger(`  ${mod}:`)
+				if (opt.color) opt.logger(chalk.cyan(`  📦 ${mod}:`))
+				else opt.logger(`  📦 ${mod}:`)
 
 				Object.entries(moduleContent).map(
 					([_key, env]: [string, ConfigItem]) => {
