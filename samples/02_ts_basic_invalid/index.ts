@@ -7,7 +7,8 @@ console.log(`Your config is${valid ? '' : ' NOT'} valid!`)
 
 // Here is our custom logger...
 function MyLogger(...args): void {
-	console.log(`▶ ${args}`)
+	const s = args.join(' ')
+	console.log(`▶ ${s.replace('\n', '\n▶')}`)
 }
 
 config.Print({ color: true, logger: MyLogger })

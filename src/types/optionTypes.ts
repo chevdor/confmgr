@@ -15,5 +15,6 @@ export type ConfigItemOptions = {
  */
 export type PrintOptions = {
 	color?: boolean
+	compact?: boolean
 	logger?: (...args) => void
 }
