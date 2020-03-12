@@ -1,0 +1,180 @@
+SAMPLE:
+  MODULE1:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+      
+  MODULE2:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE3:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE4:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE5:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE6:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE7:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE8:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE9:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE10:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE11:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE12:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE13:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE14:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
+
+  MODULE15:
+    PARAM1:
+      description: param1
+    PARAM2:
+      description: param2
+    PARAM3:
+      description: param3
+    PARAM4:
+      description: param4
+    PARAM5:
+      description: param5
