@@ -19,7 +19,7 @@ describe('RegExp', () => {
 		process.env[key] = val
 		ConfigManager.getInstance(yml).rebuild()
 		expect(ConfigManager.getInstance().ValidateField('MODULE', name)).to.be[
-			expectation
+			expectation.toString()
 		]
 	}
 
@@ -53,7 +53,7 @@ describe('RegExp', () => {
 		testValue('BOOL2', 'foo', true) // Boolean('foo') => true
 	})
 
-	it('T0703 Should reject according to regexp for non boolean type', function() {
+	it('T0704 Should reject according to regexp for non boolean type', function() {
 		testValue('BOOL3', 'true', true)
 		testValue('BOOL3', 'false', true)
 		testValue('BOOL3', 'yes', false)
@@ -61,5 +61,12 @@ describe('RegExp', () => {
 		testValue('BOOL3', '0', false)
 		testValue('BOOL3', '1', false)
 		testValue('BOOL3', 'foo', false) // Boolean('foo') => true
+	})
+
+	it('T0705 Should pass issue #8', function() {
+		process.env.SAMPLE_MODULE_URL = 'xx://localhost:9944'
+		ConfigManager.getInstance(yml).rebuild()
+		expect(ConfigManager.getInstance().ValidateField('MODULE', 'URL')).to.be
+			.false
 	})
 })

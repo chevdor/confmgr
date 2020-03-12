@@ -14,3 +14,7 @@ SAMPLE:
       regexp: 
         pattern: ^true|false$ # makes sense for a string
         attributes: i
+    URL:
+      description: some web socket URL
+      default: ws://localhost:1234
+      regexp: ^wss?://\w+:\d+$

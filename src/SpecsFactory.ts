@@ -38,8 +38,6 @@ export class SpecsFactory {
 	}
 
 	public appendSpec(module: string, newSpec: ConfigItem): ConfigSpecs {
-		// console.log('appendSpec', module, newSpec)
-
 		if (!this.specs.config) this.specs.config = {}
 		if (!this.specs.config[module]) this.specs.config[module] = {}
 		this.specs.config[module][newSpec.name] = newSpec

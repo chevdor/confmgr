@@ -22,7 +22,7 @@ import { RegexpWithAttributes } from './types/optionTypes'
  * Helper fonction to clone objects
  * @param object The object to clone
  */
-function clone(object: unknown): unknown {
+function clone<T>(object: T): T {
 	return JSON.parse(JSON.stringify(object))
 }
 
@@ -159,7 +159,6 @@ export class ConfigManager {
 				Object.entries(confClone.values[mod]).map(([key, _val]) => {
 					const longKey = `${this.specs.container.prefix}_${mod}_${key}`
 					confClone.values[mod][key] = process.env[longKey]
-					// console.log(`assigned ${mod}.${key} = ${confClone.values[mod][key]}`)
 
 					// Here we check if we need to apply some default values
 					if (
@@ -182,18 +181,9 @@ export class ConfigManager {
 								break
 
 							case 'boolean':
-								// console.log(
-								// 	'convert to bool:',
-								// 	// mod,
-								// 	// key,
-								// 	confClone.values[mod][key]
-								// 	// confClone.values
-								// )
-
 								confClone.values[mod][key] = ConfigManager.stringToBoolean(
 									confClone.values[mod][key] as string
 								)
-								// console.log('Converted to:', confClone.values[mod][key])
 
 								break
 
@@ -266,6 +256,12 @@ export class ConfigManager {
 		global['Config'] = ConfigManager.getInstance().getConfig()
 	}
 
+	private static isregExpWithAttributes(
+		r: RegExp | RegexpWithAttributes
+	): r is RegexpWithAttributes {
+		return (r as RegexpWithAttributes).pattern !== undefined
+	}
+
 	/**
 	 * This is the actual function performing the validation of a given field according to the spcs
 	 * @param specs The specs
@@ -282,7 +278,7 @@ export class ConfigManager {
 					attributes: undefined,
 				}
 
-				if (!('pattern' in specs.options.regexp))
+				if (!ConfigManager.isregExpWithAttributes(specs.options.regexp))
 					regexp_options.pattern = specs.options.regexp
 				else {
 					regexp_options = specs.options.regexp as RegexpWithAttributes
