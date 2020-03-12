@@ -33,7 +33,7 @@ function clone(object: unknown): unknown {
  */
 export class ConfigManager {
 	private static instance: ConfigManager
-
+	private config: ConfigObject
 	private specs: ConfigSpecs
 
 	/**
@@ -94,6 +94,7 @@ export class ConfigManager {
 			} else {
 				this.instance = new ConfigManager(specs)
 			}
+			this.instance.rebuild()
 		}
 
 		return this.instance
@@ -129,12 +130,16 @@ export class ConfigManager {
 		}
 	}
 
+	public getConfig(): ConfigObject {
+		return this.config
+	}
+
 	/**
 	 * This retrieves the config and fills defaults.
 	 * Additionnaly, the config object you get is decorated with a few helper fonctions
 	 * such as Print, Validate, etc... to help you easily use your config
 	 */
-	public getConfig(): ConfigObject {
+	public buildConfig(): ConfigObject {
 		// here we clone the config specs so we dont lose the specs
 		const confClone: ConfigObject = {
 			values: clone(this.specs.config) as ModuleDictionnary,
@@ -232,6 +237,13 @@ export class ConfigManager {
 	public refresh(): void {
 		const envfile = ConfigManager.getEnvFile()
 		dotenv.config({ path: envfile })
+	}
+
+	/** Does not touch the ENV but rebuild the config.
+	 * This is useful if you know that the ENV changed
+	 */
+	public rebuild(): void {
+		this.config = this.buildConfig()
 	}
 
 	/** Calling this function will get an instance of the Config and attach it

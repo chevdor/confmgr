@@ -12,6 +12,7 @@ import {
 
 describe('ConfigManager', () => {
 	beforeEach(function() {
+		ConfigManager.clearInstance()
 		clearEnv()
 		loadDefaultEnv()
 	})
@@ -88,33 +89,37 @@ describe('ConfigManager', () => {
 
 	it('T0012 Should validate a single field', function() {
 		let config
+		ConfigManager.getInstance(specs)
 
 		process.env.SAMPLE_MODULE_REGEXP = '22_33'
-		config = ConfigManager.getInstance(specs).getConfig()
+		ConfigManager.getInstance().rebuild()
+		config = ConfigManager.getInstance().getConfig()
 
 		expect(config.values.MODULE['REGEXP']).to.equal('22_33')
 		expect(config.ValidateField('MODULE', 'REGEXP')).to.be.true
 
 		process.env.SAMPLE_MODULE_REGEXP = '222_33'
-		config = ConfigManager.getInstance(specs).getConfig()
+		ConfigManager.getInstance().rebuild()
+		config = ConfigManager.getInstance().getConfig()
 		expect(config.values.MODULE['REGEXP']).to.equal('222_33')
 		expect(config.ValidateField('MODULE', 'REGEXP')).to.be.false
+
+		// put back the ENV as it was so we dont affect other tests
+		process.env.SAMPLE_MODULE_REGEXP = '12_34'
+		ConfigManager.getInstance().rebuild()
 	})
 
 	it('T0013 Should load config to global', function() {
+		ConfigManager.getInstance(specs)
 		ConfigManager.loadToGlobal()
 		expect(global['Config'].values.MODULE).to.include.keys('PARAM1', 'PARAM2')
 	})
 
-	it('T0014 Should not be affected by Print()', function() {
+	it('T0014 Print() should not change th config', function() {
 		const config = ConfigManager.getInstance(specs).getConfig()
-
+		expect(config.values.MODULE['PARAM1']).to.equal(param1)
 		config.Print({ compact: true })
 		expect(config.values.MODULE['PARAM1']).to.equal(param1)
-		expect(config.values.MODULE['PARAM2']).to.equal(param2)
-		expect(config.values.MODULE['SECRET']).to.equal(secret)
-		expect(config.values.MODULE['REGEXP']).to.equal(regexp)
-		expect(() => ConfigManager.getInstance()).to.not.throw()
 	})
 
 	it('T0015 Should call the Getter', function() {

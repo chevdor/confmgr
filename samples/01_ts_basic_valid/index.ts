@@ -6,3 +6,5 @@ const valid = config.Validate()
 console.log(`Your config is${valid ? '' : ' NOT'} valid!`)
 
 config.Print({ color: true, compact: false })
+
+console.log(`PARAM1=${config.Get('MODULE_01', 'PARAM1')}`)
