@@ -16,12 +16,13 @@ import YAML from 'yaml'
 import fs from 'fs'
 import { SpecsFactory } from './SpecsFactory'
 import { Key, ConfigValue } from './types/baseTypes'
+import { RegexpWithAttributes } from './types/optionTypes'
 
 /**
  * Helper fonction to clone objects
  * @param object The object to clone
  */
-function clone(object: unknown): unknown {
+function clone<T>(object: T): T {
 	return JSON.parse(JSON.stringify(object))
 }
 
@@ -114,20 +115,22 @@ export class ConfigManager {
 	 */
 	private static stringToBoolean(s: string): boolean {
 		if (typeof s === 'boolean') return s
-
+		let res = null
 		switch (s.toLowerCase().trim()) {
 			case 'true':
 			case 'yes':
 			case '1':
-				return true
+				res = true
 			case 'false':
 			case 'no':
 			case '0':
 			case null:
-				return false
+				res = false
 			default:
-				return Boolean(s)
+				res = Boolean(s)
 		}
+
+		return res
 	}
 
 	public getConfig(): ConfigObject {
@@ -156,7 +159,6 @@ export class ConfigManager {
 				Object.entries(confClone.values[mod]).map(([key, _val]) => {
 					const longKey = `${this.specs.container.prefix}_${mod}_${key}`
 					confClone.values[mod][key] = process.env[longKey]
-					// console.log(`assigned ${mod}.${key} = ${confClone.values[mod][key]}`)
 
 					// Here we check if we need to apply some default values
 					if (
@@ -182,6 +184,7 @@ export class ConfigManager {
 								confClone.values[mod][key] = ConfigManager.stringToBoolean(
 									confClone.values[mod][key] as string
 								)
+
 								break
 
 							case 'array':
@@ -253,6 +256,12 @@ export class ConfigManager {
 		global['Config'] = ConfigManager.getInstance().getConfig()
 	}
 
+	private static isregExpWithAttributes(
+		r: RegExp | RegexpWithAttributes
+	): r is RegexpWithAttributes {
+		return (r as RegexpWithAttributes).pattern !== undefined
+	}
+
 	/**
 	 * This is the actual function performing the validation of a given field according to the spcs
 	 * @param specs The specs
@@ -264,7 +273,18 @@ export class ConfigManager {
 		if (specs && specs.options) {
 			const item = config[module][specs.name]
 			if (specs.options.regexp !== undefined) {
-				const regex = RegExp(specs.options.regexp)
+				let regexp_options = {
+					pattern: undefined,
+					attributes: undefined,
+				}
+
+				if (!ConfigManager.isregExpWithAttributes(specs.options.regexp))
+					regexp_options.pattern = specs.options.regexp
+				else {
+					regexp_options = specs.options.regexp as RegexpWithAttributes
+				}
+
+				const regex = RegExp(regexp_options.pattern, regexp_options.attributes)
 				const testResult = regex.test(item)
 				result = result && testResult
 			}

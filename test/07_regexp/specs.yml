@@ -1,0 +1,20 @@
+SAMPLE:
+  MODULE:
+    BOOL1:
+      description: some regexp
+      type: boolean
+    BOOL2:
+      description: some regexp
+      type: boolean
+      regexp: 
+        pattern: ^true|false$ # makes no sense for a bool
+        attributes: i
+    BOOL3:
+      description: some regexp
+      regexp: 
+        pattern: ^true|false$ # makes sense for a string
+        attributes: i
+    URL:
+      description: some web socket URL
+      default: ws://localhost:1234
+      regexp: ^wss?://\w+:\d+$
