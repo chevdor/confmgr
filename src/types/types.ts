@@ -12,10 +12,10 @@ export type FactoryCtorInitParams = {
 }
 
 export interface ConfigObject {
-	Validate(): Function
-	Get(Module, Key): Function
-	Print(PrintOptions?): Function
-	ValidateField(Module, string): Function
+	Validate(): boolean
+	Get(Module, Key): ConfigValue
+	Print(PrintOptions?): void
+	ValidateField(Module, string): boolean
 	values: ModuleDictionnary
 }
 
