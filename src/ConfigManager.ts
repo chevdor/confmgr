@@ -376,7 +376,7 @@ export class ConfigManager {
 
 		let entry = '    '
 		entry += chalk[valid ? 'green' : 'red'](
-			`${valid ? '✅' : '❌'} ${item.name.replace(container + '_', '')}: `
+			`${valid ? ' ✅' : ' ❌'} ${item.name.replace(container + '_', '')}: `
 		)
 
 		const io = item.options
@@ -413,7 +413,7 @@ export class ConfigManager {
 		const container = `${this.specs.container.prefix}`
 		const valid = this.validaFieldsSpecs(mod, item)
 		let entry = '    '
-		entry += `${valid ? '✅' : '❌'} ${item.name.replace(
+		entry += `${valid ? ' ✅' : ' ❌'} ${item.name.replace(
 			container + '_',
 			''
 		)}: `
