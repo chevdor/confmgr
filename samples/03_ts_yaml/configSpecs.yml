@@ -7,6 +7,15 @@ TS_SAMPLE:
     SECRET:
       description: some secret
       masked: true
+    BOOL1:
+      description: bool1
+      type: boolean
+      default: true
+    BOOL2:
+      description: bool2
+      type: boolean
+      default: true
+      
   MODULE_02:
     REGEXP:
       description: some regexp

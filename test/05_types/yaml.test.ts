@@ -10,8 +10,10 @@ export function loadDefaultEnvForTypes(): void {
 	process.env.SAMPLE_MODULE_STRING2 = '42'
 	process.env.SAMPLE_MODULE_NUMBER2 = '3.14'
 	process.env.SAMPLE_MODULE_OBJECT2 = '{"name": "bar", "age": 43}'
+	process.env.SAMPLE_MODULE_BOOL1 = 'true'
 	process.env.SAMPLE_MODULE_BOOL2 = 'true'
 	process.env.SAMPLE_MODULE_BOOL3 = 'TRUE'
+	process.env.SAMPLE_MODULE_BOOL4 = 'false'
 	process.env.SAMPLE_MODULE_ARRAY2 = '[1,2,3]'
 	process.env.SAMPLE_MODULE_ARRAY3 = '["a","b","c"]'
 }
@@ -107,5 +109,13 @@ describe('Types', () => {
 		expect(() => ConfigManager.getInstance(yml).getConfig()).to.throw(
 			/not supported: foobar/i
 		)
+	})
+
+	it('T0516 Should get right boolean values', function() {
+		const yml = path.join(__dirname, 'specs.yml')
+		const config = ConfigManager.getInstance(yml).getConfig()
+
+		expect(config.Get('MODULE', 'BOOL1')).equal(true)
+		expect(config.Get('MODULE', 'BOOL4')).equal(false)
 	})
 })

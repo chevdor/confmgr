@@ -50,3 +50,8 @@ SAMPLE:
       description: some array
       type: array
       mandatory: true
+
+    BOOL4:
+      description: some boolean
+      type: boolean
+      default: true

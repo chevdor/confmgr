@@ -121,11 +121,13 @@ export class ConfigManager {
 			case 'yes':
 			case '1':
 				res = true
+				break
 			case 'false':
 			case 'no':
 			case '0':
 			case null:
 				res = false
+				break
 			default:
 				res = Boolean(s)
 		}
