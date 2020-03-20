@@ -81,7 +81,8 @@ export class ConfigManager {
 
 	/**
 	 * ConfigManager is a singleton.
-	 * @param specs The config specs the ConfigManager will rely on
+	 * @param specs The config specs the ConfigManager will rely on. It can be a ConfigSpecs object or the path of a file.
+	 * In that case, the file can be either a YAML file or a JSON file.
 	 */
 	public static getInstance(specs?: ConfigSpecs | string): ConfigManager {
 		if (!this.instance && !specs) {
