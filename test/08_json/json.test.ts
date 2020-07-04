@@ -5,7 +5,7 @@ import { clearEnv } from '../helpers'
 // import { Module } from 'module'
 
 describe('JSON', () => {
-	beforeEach(function() {
+	beforeEach(function () {
 		ConfigManager.clearInstance()
 		clearEnv()
 		process.env.SAMPLE_MODULE_BOOL1 = 'init'
@@ -13,7 +13,7 @@ describe('JSON', () => {
 		process.env.SAMPLE_MODULE_BOOL3 = 'init'
 	})
 
-	it('T0801 Should accept loading valid JSON specs', function() {
+	it('T0801 Should accept loading valid JSON specs', function () {
 		const json = path.join(__dirname, 'good.json')
 		expect(() => ConfigManager.getInstance(json)).to.not.throw()
 		const configSpecs = ConfigManager.getInstance(json).getSpecs()
@@ -22,7 +22,7 @@ describe('JSON', () => {
 		expect(config.Get('MODULE', 'BOOL1')).to.be.a('boolean')
 	})
 
-	it('T0801 Should reject loading bad JSON specs', function() {
+	it('T0801 Should reject loading bad JSON specs', function () {
 		const json = path.join(__dirname, 'bad.json')
 		expect(() => ConfigManager.getInstance(json)).to.throw()
 	})

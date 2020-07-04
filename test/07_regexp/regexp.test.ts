@@ -6,7 +6,7 @@ import { clearEnv } from '../helpers'
 
 describe('RegExp', () => {
 	const yml = path.join(__dirname, 'specs.yml')
-	beforeEach(function() {
+	beforeEach(function () {
 		ConfigManager.clearInstance()
 		clearEnv()
 		process.env.SAMPLE_MODULE_BOOL1 = 'init'
@@ -23,7 +23,7 @@ describe('RegExp', () => {
 		]
 	}
 
-	it('T0701 Should accept all valid booleans', function() {
+	it('T0701 Should accept all valid booleans', function () {
 		testValue('BOOL1', 'true', true)
 		testValue('BOOL1', 'True', true)
 		testValue('BOOL1', 'tRUe', true)
@@ -36,7 +36,7 @@ describe('RegExp', () => {
 		testValue('BOOL1', '1', true)
 	})
 
-	it('T0702 Should accept all valid booleans matching regexp', function() {
+	it('T0702 Should accept all valid booleans matching regexp', function () {
 		testValue('BOOL2', 'true', true)
 		testValue('BOOL2', 'True', true)
 		testValue('BOOL2', 'tRUe', true)
@@ -45,7 +45,7 @@ describe('RegExp', () => {
 		testValue('BOOL2', 'faLSe', true)
 	})
 
-	it('T0703 Should accept everything that can be converted to boolean for boolean type', function() {
+	it('T0703 Should accept everything that can be converted to boolean for boolean type', function () {
 		testValue('BOOL2', 'yes', true)
 		testValue('BOOL2', 'no', true)
 		testValue('BOOL2', '0', true)
@@ -53,7 +53,7 @@ describe('RegExp', () => {
 		testValue('BOOL2', 'foo', true) // Boolean('foo') => true
 	})
 
-	it('T0704 Should reject according to regexp for non boolean type', function() {
+	it('T0704 Should reject according to regexp for non boolean type', function () {
 		testValue('BOOL3', 'true', true)
 		testValue('BOOL3', 'false', true)
 		testValue('BOOL3', 'yes', false)
@@ -63,7 +63,7 @@ describe('RegExp', () => {
 		testValue('BOOL3', 'foo', false) // Boolean('foo') => true
 	})
 
-	it('T0705 Should pass issue #8', function() {
+	it('T0705 Should pass issue #8', function () {
 		process.env.SAMPLE_MODULE_URL = 'xx://localhost:9944'
 		ConfigManager.getInstance(yml).rebuild()
 		expect(ConfigManager.getInstance().ValidateField('MODULE', 'URL')).to.be

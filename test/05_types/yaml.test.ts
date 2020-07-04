@@ -20,13 +20,13 @@ export function loadDefaultEnvForTypes(): void {
 
 describe('Types', () => {
 	const yml = path.join(__dirname, 'specs.yml')
-	beforeEach(function() {
+	beforeEach(function () {
 		ConfigManager.clearInstance()
 		clearEnv()
 		loadDefaultEnvForTypes()
 	})
 
-	it('T0501 Should load Yaml config and env locally', function() {
+	it('T0501 Should load Yaml config and env locally', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE).to.includes.keys(
 			'STRING1',
@@ -36,67 +36,67 @@ describe('Types', () => {
 		)
 	})
 
-	it('T0502 Should handle default strings properly', function() {
+	it('T0502 Should handle default strings properly', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['STRING1']).to.be.a('string')
 	})
 
-	it('T0503 Should handle default number properly', function() {
+	it('T0503 Should handle default number properly', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['NUMBER1']).to.be.a('number')
 	})
 
-	it('T0504 Should handle default number properly', function() {
+	it('T0504 Should handle default number properly', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['BOOL1']).to.be.a('boolean')
 	})
 
-	it('T0505 Should handle default object properly', function() {
+	it('T0505 Should handle default object properly', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['OBJECT1']).to.be.a('object')
 	})
 
-	it('T0506 Should handle default array properly', function() {
+	it('T0506 Should handle default array properly', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['ARRAY1']).to.be.a('array')
 	})
 
-	it('T0507 Should contain the value default values', function() {
+	it('T0507 Should contain the value default values', function () {
 		const config = ConfigManager.getInstance(yml).getConfig()
 		expect(config.Validate()).to.be.true
 	})
 
-	it('T0508 Should convert srings', function() {
+	it('T0508 Should convert srings', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['STRING2']).to.be.a('string')
 	})
 
-	it('T0509 Should convert number', function() {
+	it('T0509 Should convert number', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['NUMBER2']).to.be.a('number')
 	})
 
-	it('T0510 Should convert boolean - case 1', function() {
+	it('T0510 Should convert boolean - case 1', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['BOOL2']).to.be.a('boolean')
 	})
 
-	it('T0511 Should convert boolean - case 2', function() {
+	it('T0511 Should convert boolean - case 2', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['BOOL3']).to.be.a('boolean')
 	})
 
-	it('T0512 Should convert array - case 1', function() {
+	it('T0512 Should convert array - case 1', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['ARRAY2']).to.be.a('array')
 	})
 
-	it('T0513 Should convert array - case 2', function() {
+	it('T0513 Should convert array - case 2', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE['ARRAY3']).to.be.a('array')
 	})
 
-	it('T0514 Should convert object - case 1', function() {
+	it('T0514 Should convert object - case 1', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		const item = config.MODULE['OBJECT2']
 		expect(item).to.be.a('object')
@@ -104,14 +104,14 @@ describe('Types', () => {
 		expect(item.age).to.equal(43)
 	})
 
-	it('T0515 Should throw an exception on unsupported types', function() {
+	it('T0515 Should throw an exception on unsupported types', function () {
 		const yml = path.join(__dirname, 'specs-error.yml')
 		expect(() => ConfigManager.getInstance(yml).getConfig()).to.throw(
 			/not supported: foobar/i
 		)
 	})
 
-	it('T0516 Should get right boolean values', function() {
+	it('T0516 Should get right boolean values', function () {
 		const yml = path.join(__dirname, 'specs.yml')
 		const config = ConfigManager.getInstance(yml).getConfig()
 

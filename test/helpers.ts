@@ -21,3 +21,13 @@ export function loadDefaultEnv(): void {
 	process.env.SAMPLE_MODULE_SECRET = secret
 	process.env.SAMPLE_MODULE_REGEXP = regexp
 }
+
+/**
+ * Here we set some ENV for testing.
+ */
+export function loadEnv(obj): void {
+	Object.keys(obj).forEach(key => {
+		const val = obj[key]
+		process.env[key] = val
+	})
+}

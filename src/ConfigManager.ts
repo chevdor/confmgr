@@ -328,7 +328,7 @@ export class ConfigManager {
 			([mod, _data]: [Module, ConfigDictionnaryRaw]) => {
 				Object.entries(configSpecs[mod]).map(
 					([_key, env]: [string, ConfigItem]) => {
-						result = result = this.validaFieldsSpecs(mod, env)
+						result = result && this.validaFieldsSpecs(mod, env)
 					}
 				)
 			}

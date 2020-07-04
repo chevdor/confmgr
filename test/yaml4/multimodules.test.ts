@@ -10,19 +10,19 @@ export function loadEnv(): void {
 
 describe('Yaml #4', () => {
 	const yml = path.join(__dirname, 'multimodules.yml')
-	beforeEach(function() {
+	beforeEach(function () {
 		ConfigManager.clearInstance()
 		clearEnv()
 		loadEnv()
 	})
 
-	it('T0401 Should load Yaml specs with several modules', function() {
+	it('T0401 Should load Yaml specs with several modules', function () {
 		expect(() => ConfigManager.getInstance(yml)).to.not.throw(
 			/Multiple modules is not supported/i
 		)
 	})
 
-	it('T0402 Should properly fetch params', function() {
+	it('T0402 Should properly fetch params', function () {
 		const config = ConfigManager.getInstance(yml).getConfig().values
 		expect(config.MODULE1['PARAM1']).to.equal('42')
 		expect(config.MODULE2['PARAM1']).to.equal('Bob')
