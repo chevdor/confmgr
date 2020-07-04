@@ -389,11 +389,12 @@ export class ConfigManager {
 		/* eslint-disable */
 		entry += chalk[valid ? 'white' : 'red'](
 			`${
-			io && io.masked ?
-				config[mod][item.name] ?
-					'*****' :
-					'empty' :
-				JSON.stringify(config[mod][item.name], null, 0)}`
+				io && io.masked
+					? config[mod][item.name]
+						? '*****'
+						: 'empty'
+					: JSON.stringify(config[mod][item.name], null, 0)
+			}`
 		)
 		/* eslint-enable */
 
@@ -427,11 +428,13 @@ export class ConfigManager {
 
 		// the value itself
 		/* eslint-disable */
-		entry += `${io && io.masked ?
-			config[mod][item.name] ?
-				'*****' :
-				'empty' :
-			JSON.stringify(config[mod][item.name], null, 0)}`
+		entry += `${
+			io && io.masked
+				? config[mod][item.name]
+					? '*****'
+					: 'empty'
+				: JSON.stringify(config[mod][item.name], null, 0)
+		}`
 		/* eslint-enable */
 
 		if (!opt.compact) {
@@ -481,7 +484,13 @@ export class ConfigManager {
 				Object.entries(moduleContent).map(
 					([key, env]: [string, ConfigItem]) => {
 						/* eslint-disable */
-						res.push(`${container}_${mod}_${key}=${env.options?.default ? JSON.stringify(env.options.default, null, 0) : ''}`)
+						res.push(
+							`${container}_${mod}_${key}=${
+								env.options?.default
+									? JSON.stringify(env.options.default, null, 0)
+									: ''
+							}`
+						)
 						/* eslint-enable */
 					}
 				)
