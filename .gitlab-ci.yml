@@ -22,13 +22,13 @@ cache:
   
 test:lint:
   stage: test
-  image: node:11
+  image: node:12
   script:
     - yarn lint
 
 test:unit:
   stage: test
-  image: node:11
+  image: node:12
   script:
     - yarn test
 
