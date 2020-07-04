@@ -71,7 +71,7 @@ MYAPP:
     
     VAR4: 
       description: some object
-      type: array
+      type: object
       default: { name: "foo", age: 42 }
 
     VAR5:
