@@ -16,6 +16,7 @@ export interface ConfigObject {
 	Get(Module, Key): ConfigValue
 	Print(PrintOptions?): void
 	ValidateField(Module, string): boolean
+	GenEnv(): string[]
 	values: ModuleDictionnary
 }
 

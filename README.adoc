@@ -116,6 +116,31 @@ You may pass values as Environment Variables as shown below:
 
     MYAPP_MODULE_VAR1='foo bar' node index.js
 
+=== Generating a default ENV file from the specs
+
+You may let `confmgr` generate a default config file using:
+
+[source, typescript]
+----
+    import { ConfigManager } from 'confmgr'
+    const config = ConfigManager.getInstance('configSpecs.yml').getConfig()
+    console.log(config.GenEnv().join('\n'))
+----
+
+You can see this in action in the sample 03. The output looks like:
+
+----
+TS_SAMPLE_MODULE_01_PARAM1=
+TS_SAMPLE_MODULE_01_PARAM2=
+TS_SAMPLE_MODULE_01_SECRET=
+TS_SAMPLE_MODULE_01_BOOL1=true
+TS_SAMPLE_MODULE_01_BOOL2=true
+TS_SAMPLE_MODULE_01_ARRAY1=[1,"a",true,{"foo":"bar"}]
+TS_SAMPLE_MODULE_01_OBJ1={"foo":"bar","list":[1,2,3]}
+TS_SAMPLE_MODULE_02_REGEXP=
+TS_SAMPLE_MODULE_02_MANDAT_WITH_DEF=42
+TS_SAMPLE_MODULE_02_MANDAT_NO_DEF=
+----
 
 === Using default .env file
 

@@ -153,6 +153,7 @@ export class ConfigManager {
 			Print: this.Print.bind(this),
 			Validate: this.Validate.bind(this),
 			ValidateField: this.ValidateField.bind(this),
+			GenEnv: this.GenEnv.bind(this),
 		}
 
 		const specs = this.getSpecs()
@@ -385,15 +386,16 @@ export class ConfigManager {
 		const io = item.options
 
 		// the value itself
+		/* eslint-disable */
 		entry += chalk[valid ? 'white' : 'red'](
 			`${
-			io && io.masked
-				? config[mod][item.name]
-					? '*****'
-					: 'empty'
-				: JSON.stringify(config[mod][item.name], null, 0)
-			}`
+			io && io.masked ?
+				config[mod][item.name] ?
+					'*****' :
+					'empty' :
+				JSON.stringify(config[mod][item.name], null, 0)}`
 		)
+		/* eslint-enable */
 
 		if (!opt.compact) {
 			entry += chalk.grey(`\n    ${item.description}\n`)
@@ -424,13 +426,13 @@ export class ConfigManager {
 		const io = item.options
 
 		// the value itself
-		entry += `${
-			io && io.masked
-				? config[mod][item.name]
-					? '*****'
-					: 'empty'
-				: JSON.stringify(config[mod][item.name], null, 0)
-			}`
+		/* eslint-disable */
+		entry += `${io && io.masked ?
+			config[mod][item.name] ?
+				'*****' :
+				'empty' :
+			JSON.stringify(config[mod][item.name], null, 0)}`
+		/* eslint-enable */
 
 		if (!opt.compact) {
 			entry += `\n    ${item.description}\n`
@@ -469,5 +471,22 @@ export class ConfigManager {
 				)
 			}
 		)
+	}
+
+	public GenEnv(): string[] {
+		const container = `${this.specs.container.prefix}`
+		const res: string[] = []
+		Object.entries(this.specs.config).map(
+			([mod, moduleContent]: [Module, ConfigDictionnaryRaw]) => {
+				Object.entries(moduleContent).map(
+					([key, env]: [string, ConfigItem]) => {
+						/* eslint-disable */
+						res.push(`${container}_${mod}_${key}=${env.options?.default ? JSON.stringify(env.options.default, null, 0) : ''}`)
+						/* eslint-enable */
+					}
+				)
+			}
+		)
+		return res
 	}
 }
