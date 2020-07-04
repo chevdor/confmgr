@@ -1,0 +1,32 @@
+SAMPLE:
+  MAIN:
+    PORT:
+      type: number
+      description: Some port number
+      default: 3000
+    USER1:
+      description: A person object defined in JS
+      type: object
+      default: { name: 'Bob', age: 18, friends: ['Alice', 'Charlie'], happy: true }
+    USER2:
+      description: A person object defined in YAML
+      type: object
+      default: 
+        name: Bob
+        age: 18
+        friends:
+          - Alice
+          - Charlie
+        happy: true
+    USER3:
+      description: A person object defined in YAML
+      type: object
+      default: 
+        name: Bob
+        age: 18
+        friends:
+          - name: 'John'
+            age: 23
+          - name: 'Peter'
+            age: 67
+        happy: true
