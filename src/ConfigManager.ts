@@ -387,11 +387,11 @@ export class ConfigManager {
 		// the value itself
 		entry += chalk[valid ? 'white' : 'red'](
 			`${
-				io && io.masked
-					? config[mod][item.name]
-						? '*****'
-						: 'empty'
-					: config[mod][item.name]
+			io && io.masked
+				? config[mod][item.name]
+					? '*****'
+					: 'empty'
+				: JSON.stringify(config[mod][item.name], null, 0)
 			}`
 		)
 
@@ -429,8 +429,8 @@ export class ConfigManager {
 				? config[mod][item.name]
 					? '*****'
 					: 'empty'
-				: config[mod][item.name]
-		}`
+				: JSON.stringify(config[mod][item.name], null, 0)
+			}`
 
 		if (!opt.compact) {
 			entry += `\n    ${item.description}\n`

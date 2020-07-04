@@ -15,7 +15,13 @@ TS_SAMPLE:
       description: bool2
       type: boolean
       default: true
-      
+    ARRAY1:
+      description: some array
+      default: [1, 'a', true, { foo: bar }]
+    OBJ1:
+      description: some object
+      default: { foo: bar, list: [1, 2, 3] }
+
   MODULE_02:
     REGEXP:
       description: some regexp
