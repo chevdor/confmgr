@@ -14,12 +14,12 @@ describe('Yaml Object', () => {
 		expect(() => ConfigManager.getInstance(yml)).to.not.throw()
 		const config = ConfigManager.getInstance(yml)
 		expect(config.Validate()).to.be.true
-	
+
 		const user = config.Get('MAIN', 'USER1')
 		expect(user.name).to.equal('Bob')
 		expect(user.age).to.equal(18)
 		expect(user.friends).to.deep.equal(['Alice', 'Charlie'])
-		expect(user.happy).to.be.true;
+		expect(user.happy).to.be.true
 	})
 
 	it('T1002 Should get the YAML user', function () {
@@ -31,7 +31,7 @@ describe('Yaml Object', () => {
 		expect(user.name).to.equal('Bob')
 		expect(user.age).to.equal(18)
 		expect(user.friends).to.deep.equal(['Alice', 'Charlie'])
-		expect(user.happy).to.be.true;
+		expect(user.happy).to.be.true
 	})
 
 	it('T1003 Should get the YAML user', function () {
@@ -44,6 +44,6 @@ describe('Yaml Object', () => {
 		expect(user.age).to.equal(18)
 		expect(user.friends[0].name).to.equal('John')
 		expect(user.friends[1].name).to.equal('Peter')
-		expect(user.happy).to.be.true;
+		expect(user.happy).to.be.true
 	})
 })
