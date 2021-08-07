@@ -3,11 +3,13 @@
 :sectnums:
 :sectanchors:
 
+image::resources/cfgmgr_128px.png[width=128px, align=center]
+
 == Intro
 
-`confmgr` is (yet another) configuration manager for your NodeJS apps. It is written in Typescript and thus supports Typescript as well as Javascript. 
+`confmgr` is (yet another) configuration manager for your NodeJS apps. It is written in Typescript and thus supports Typescript as well as Javascript.
 
-.Why *another* one? 
+.Why *another* one?
 `confmgr` brings interesting features that are not available in libs. While focusing on ease of use, it brings features that no longer need to be part of your app such as:
 
 .Features at a glance
@@ -230,11 +232,11 @@ You may add validation your variables using a regular expression.
 
 ```
 MYAPP:
-  MYMODULE:    
-    REGEXP: 
+  MYMODULE:
+    REGEXP:
       description: some regexp
       regexp: ^\d{2}_\d{2}
-    
+
 ```
 means and enforces that `MYAPP_MYMODULE_REGEXP` contains a value made of 2 digits followed by underscore and another 2 digits.
 `12_34` would be valid whereas `123_45` is not.
@@ -267,11 +269,11 @@ include::src/types/baseTypes.ts[tag=Type]
 
 .Javascript
 
-[source,javascript] 
+[source,javascript]
     const ConfigManager = require('confmgr').ConfigManager;
 
 .Typescript
-[source,typescript] 
+[source,typescript]
     import { ConfigManager } from 'confmgr';
 
 
