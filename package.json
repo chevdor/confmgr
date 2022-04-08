@@ -60,7 +60,7 @@
   "dependencies": {
     "@babel/runtime": "7.17.9",
     "@types/yaml": "1.9.7",
-    "chalk": "^4",
+    "chalk": "~4",
     "dotenv": "16.0.0",
     "typescript": "4.6.3",
     "yaml": "2.0.0"
@@ -95,7 +95,7 @@
     ]
   },
   "engines": {
-    "node": ">=12",
+    "node": ">=16",
     "yarn": "^1.15"
   }
 }

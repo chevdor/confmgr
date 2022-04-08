@@ -19,16 +19,16 @@ cache:
   paths:
     - lib
     - node_modules
-  
+
 test:lint:
   stage: test
-  image: node:12
+  image: node:16
   script:
     - yarn lint
 
 test:unit:
   stage: test
-  image: node:12
+  image: node:16
   script:
     - yarn test
 
