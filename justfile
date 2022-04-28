@@ -7,5 +7,4 @@ md:
     asciidoctor -b docbook -a leveloffset=+1 -o - README.adoc | pandoc   --markdown-headings=atx --wrap=preserve -t markdown_strict -f docbook - > README.md
 
 audit:
-  npm install --package-lock-only
-  npm audit
+  yarn audit
