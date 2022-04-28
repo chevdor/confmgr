@@ -27,7 +27,7 @@
     "test:coverage1": "TS_NODE_FILES=true mocha — exit — require ts-node/register — colors test/**/*.ts",
     "test:coverage2": "nyc npm run test",
     "test2": "nyc mocha",
-    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "format": "prettier --write \"src/**/*.ts\"",
     "build": "tsc --build tsconfig.json",
     "build:doc": "typedoc --out docs src",
     "prepare": "yarn build",
