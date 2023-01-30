@@ -38,6 +38,7 @@ jobs:
 
       - name: Build doc
         run: |
+          yarn install
           yarn build:doc
 
       - name: Upload artifact
