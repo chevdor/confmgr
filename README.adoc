@@ -48,7 +48,7 @@ NOTE: If you are using a custom logger, you may also pass it to the `Print()` me
 == Documentation
 
 You can keep reading this file and/or check the `doc` and `samples` folders.
-You can also visit https://chevdor.gitlab.io/confmgr to see the API documentation.
+You can also visit https://chevdor.gitlab.io/confmgr to see the old API documentation.
 
 == In a nutshell
 
