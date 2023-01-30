@@ -1,10 +1,11 @@
 # ENV Config Manager
 
-![cfgmgr 128px](resources/cfgmgr_128px.png)
+![cfgmgr 128px](https://github.com/chevdor/confmgr/blob/master/resources/cfgmgr_128px.png?raw=true)
 
 ## Intro
 
 `confmgr` is (yet another) configuration manager for your NodeJS apps. It is written in Typescript and thus supports Typescript as well as Javascript.
+Check out the [documentation](https://chevdor.github.io/confmgr/) for more details.
 
 **Why **another** one?**
 
@@ -64,12 +65,12 @@ You can also visit <https://chevdor.gitlab.io/confmgr> to see the old API docume
 
 ### Usage
 
-        import { ConfigManager } from 'confmgr';
+    import { ConfigManager } from 'confmgr';
 
-        const config = ConfigManager.getInstance('configSpecs.yml').getConfig();
-        const valid = config.Validate();
-        console.log(`Your config is${valid ? '' : ' NOT'} valid!`);
-        config.Print();
+    const config = ConfigManager.getInstance('configSpecs.yml').getConfig();
+    const valid = config.Validate();
+    console.log(`Your config is${valid ? '' : ' NOT'} valid!`);
+    config.Print();
 
 The repo contains many more samples in both Typescript and Javascript, using YML and the Specs Factory.
 
@@ -186,9 +187,9 @@ You may pass values as Environment Variables as shown below:
 
 You may let `confmgr` generate a default config file using:
 
-        import { ConfigManager } from 'confmgr'
-        const config = ConfigManager.getInstance('configSpecs.yml').getConfig()
-        console.log(config.GenEnv().join('\n'))
+    import { ConfigManager } from 'confmgr'
+    const config = ConfigManager.getInstance('configSpecs.yml').getConfig()
+    console.log(config.GenEnv().join('\n'))
 
 You can see this in action in the sample 03. The output looks like:
 
