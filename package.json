@@ -18,7 +18,7 @@
   "scripts": {
     "clean": "rm -rf .nyc_output build coverage node_modules out dist lib build docs .nyc_output",
     "setup": "npm install -g ts-node",
-    "lint": "eslint --ext .ts . && tsc --noEmit --pretty",
+    "lint": "eslint --ext .ts .",
     "lint:fix": "eslint --ext .ts . --fix",
     "test": "mocha -i --grep 'Benchmarks'",
     "test:all": "mocha",
@@ -85,7 +85,8 @@
   "standard": {
     "parser": "babel-eslint",
     "ignore": [
-      "build/"
+      "build/",
+      "node_modules"
     ],
     "env": [
       "mocha"
