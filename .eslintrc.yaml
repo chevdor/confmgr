@@ -40,9 +40,7 @@ rules:
   ]
   no-console: 0
   no-undef: 0
-  "@typescript-eslint/explicit-function-return-type": ["warn", {
-    "allowExpressions": true
-  }]
+  "@typescript-eslint/explicit-function-return-type": 0
   "@typescript-eslint/no-use-before-define": "warn"
   "@typescript-eslint/indent": ['error', 'tab']
   "no-warning-comments": ["warn", {
@@ -50,4 +48,3 @@ rules:
       ["todo", "fixme", "xxx"], "location": "anywhere"
     }
   ]
- 

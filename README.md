@@ -48,7 +48,7 @@ If you are using a custom logger, you may also pass it to the `Print()` method s
 ## Documentation
 
 You can keep reading this file and/or check the `doc` and `samples` folders.
-You can also visit <https://chevdor.gitlab.io/confmgr> to see the API documentation.
+You can also visit <https://chevdor.gitlab.io/confmgr> to see the old API documentation.
 
 ## In a nutshell
 
@@ -441,9 +441,9 @@ Then you may for instance start with the tests:
 
 ## Contributing
 
-If you are considering contributing, you will find many ways to apply your skills. There is still a lot that can be done in this project. Feel free to submit any PR you think may improve the lib or stop by the issue list and check the [Contributions Welcome](https://gitlab.com/chevdor/confmgr/issues?label_name%5B%5D=Contribution+Welcome) label, it may give you a few ideas.
+If you are considering contributing, you will find many ways to apply your skills. There is still a lot that can be done in this project. Feel free to submit any PR you think may improve the lib or stop by the issue list and check the [Contributions Welcome](https://github.com/chevdor/confmgr/issues?label_name%5B%5D=Contribution+Welcome) label, it may give you a few ideas.
 
-You may report any bug or submit your PRs at <https://gitlab.com/chevdor/confmgr>
+You may report any bug or submit your PRs at <https://github.com/chevdor/confmgr>
 
 # Samples
 
