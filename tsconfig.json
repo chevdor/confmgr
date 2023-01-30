@@ -21,7 +21,7 @@
     "suppressImplicitAnyIndexErrors": true,
     "outDir": "./lib",
     "baseUrl": ".",
-    "types": []
+    "types": ["mocha"]
   },
   "include": ["./bin/**/*", "./src/**/*", "./package.json"],
   "exclude": ["node_modules", "**/*.test.ts", "lib"],
